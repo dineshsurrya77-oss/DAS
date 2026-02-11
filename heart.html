@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heartbeat Cursor Pro</title>
+    <style>
+        :root {
+            --heart-red: #ff3e6c;
+            --bg-dark: #0f0a0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Hide default cursor */
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #2a1015 0%, #0f0a0b 100%);
+        }
+
+        .instruction-text {
+            color: rgba(255, 255, 255, 0.2);
+            text-align: center;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: 300;
+        }
+
+        /* --- MAIN HEART CURSOR --- */
+        #heart-pointer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            z-index: 10000;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 10px rgba(255, 62, 108, 0.5));
+            /* Beat Animation */
+            animation: heartBeat 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        @keyframes heartBeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            15% { transform: translate(-50%, -50%) scale(1.25); }
+            30% { transform: translate(-50%, -50%) scale(1); }
+            45% { transform: translate(-50%, -50%) scale(1.15); }
+            60% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* --- EMOJI PARTICLES --- */
+        .heart-emoji {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 20px;
+            user-select: none;
+        }
+
+        /* --- BACKGROUND BLOOM --- */
+        #glow-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 62, 108, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instruction-text">
+        <h1>Move your mouse</h1>
+        <p>with love</p>
+    </div>
+
+    <div id="glow-follower"></div>
+
+    <div id="heart-pointer">
+        <svg viewBox="0 0 32 32" fill="var(--heart-red)">
+            <path d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z"/>
+        </svg>
+    </div>
+
+    <script>
+        const heartPointer = document.getElementById('heart-pointer');
+        const glowFollower = document.getElementById('glow-follower');
+        const emojis = ['❤️', '💖', '💝', '💗', '💓', '✨'];
+        
+        let mX = 0, mY = 0;
+        let gX = 0, gY = 0;
+
+        // Track Mouse
+        window.addEventListener('mousemove', (e) => {
+            mX = e.clientX;
+            mY = e.clientY;
+
+            // Create trail on move
+            if (Math.random() > 0.8) { // Only spawn occasionally for performance
+                createHeartTrail(mX, mY);
+            }
+        });
+
+        // Click interaction
+        window.addEventListener('mousedown', () => {
+            for(let i=0; i<8; i++) {
+                createHeartTrail(mX, mY, true); // Burst of hearts
+            }
+        });
+
+        // Animation Loop
+        function update() {
+            // Main Heart: Instant Follow
+            heartPointer.style.left = mX + 'px';
+            heartPointer.style.top = mY + 'px';
+
+            // Glow: Smooth Follow (Lerp)
+            gX += (mX - gX) * 0.1;
+            gY += (mY - gY) * 0.1;
+            glowFollower.style.left = gX + 'px';
+            glowFollower.style.top = gY + 'px';
+
+            requestAnimationFrame(update);
+        }
+        update();
+
+        function createHeartTrail(x, y, isBurst = false) {
+            const el = document.createElement('div');
+            el.className = 'heart-emoji';
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            document.body.appendChild(el);
+
+            // Randomize movement
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = isBurst ? (Math.random() * 10 + 5) : (Math.random() * 2 + 1);
+            const destX = x + Math.cos(angle) * (isBurst ? 150 : 50);
+            const destY = y + Math.sin(angle) * (isBurst ? 150 : 50) - 100; // Float upwards
+
+            const duration = isBurst ? 1200 : 1500;
+
+            el.animate([
+                { 
+                    transform: `translate(${x}px, ${y}px) scale(0)`, 
+                    opacity: 1 
+                },
+                { 
+                    transform: `translate(${destX}px, ${destY}px) scale(1.5)`, 
+                    opacity: 0 
+                }
+            ], {
+                duration: duration,
+                easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                fill: 'forwards'
+            });
+
+            // Clean up DOM
+            setTimeout(() => {
+                el.remove();
+            }, duration);
+        }
+    </script>
+</body>
+</html>

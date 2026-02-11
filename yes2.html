@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            /* Prismatic Color Palette */
+            --color-red: #ff3e6c;
+            --color-pistha: #93C572;
+            --color-magenta: #ff00ff;
+            --color-rose: #f33a73;
+            --color-violet: #8b5cf6;
+            --color-cyan: #00fff7;
+        }
+
+        .galaxy-btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            background: transparent;
+        }
+
+        .galaxy-yes-button {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 35px 70px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            /* Prismatic Border Animation */
+            animation: borderGlow 8s linear infinite;
+        }
+
+        /* 🎬 Heart Color Cycling Animation */
+        .heart-icon {
+            width: 80px;
+            height: 80px;
+            z-index: 2;
+            animation: 
+                heartPump 1.4s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95),
+                colorShift 10s linear infinite;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .btn-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 6px;
+            font-size: 1.5rem;
+            z-index: 2;
+            margin-top: 15px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Keyframes for Multi-Color Cycle */
+        @keyframes colorShift {
+            0% { fill: var(--color-red); color: var(--color-red); }
+            20% { fill: var(--color-pistha); color: var(--color-pistha); }
+            40% { fill: var(--color-magenta); color: var(--color-magenta); }
+            60% { fill: var(--color-rose); color: var(--color-rose); }
+            80% { fill: var(--color-violet); color: var(--color-violet); }
+            100% { fill: var(--color-red); color: var(--color-red); }
+        }
+
+        @keyframes borderGlow {
+            0% { border-color: var(--color-red); box-shadow: 0 0 20px var(--color-red); }
+            20% { border-color: var(--color-pistha); box-shadow: 0 0 20px var(--color-pistha); }
+            40% { border-color: var(--color-magenta); box-shadow: 0 0 20px var(--color-magenta); }
+            60% { border-color: var(--color-rose); box-shadow: 0 0 20px var(--color-rose); }
+            80% { border-color: var(--color-violet); box-shadow: 0 0 20px var(--color-violet); }
+            100% { border-color: var(--color-red); box-shadow: 0 0 20px var(--color-red); }
+        }
+
+        @keyframes heartPump {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.25); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+        }
+
+        .galaxy-yes-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .trail-star {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 20px;
+            text-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="galaxy-btn-container">
+        <button id="yesBtn" class="galaxy-yes-button">
+            <svg class="heart-icon" viewBox="0 0 32 32">
+                <path d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z"/>
+            </svg>
+            <span class="btn-text">YES</span>
+        </button>
+    </div>
+
+    <script>
+        const colors = ['#ff3e6c', '#93C572', '#ff00ff', '#f33a73', '#8b5cf6', '#00fff7'];
+
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            // Trigger Prismatic Explosion
+            for(let i = 0; i < 100; i++) {
+                createPrismaticStar();
+            }
+            
+            this.style.transform = "scale(0.9)";
+            setTimeout(() => {
+                alert("The universe says YES! 💖✨");
+            }, 500);
+        });
+
+        function createPrismaticStar() {
+            const star = document.createElement('div');
+            star.className = 'trail-star';
+            star.innerHTML = '✦';
+            // Pick a random color from our prismatic palette
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            star.style.color = color;
+            star.style.left = '50vw';
+            star.style.top = '50vh';
+            document.body.appendChild(star);
+
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 200 + Math.random() * 500;
+            const destX = Math.cos(angle) * velocity;
+            const destY = Math.sin(angle) * velocity;
+
+            star.animate([
+                { transform: 'translate(-50%, -50%) scale(1) rotate(0deg)', opacity: 1 },
+                { transform: `translate(${destX}px, ${destY}px) scale(0) rotate(720deg)`, opacity: 0 }
+            ], {
+                duration: 2000,
+                easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+            }).onfinish = () => star.remove();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Dharshini ❤️</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&family=Parisienne&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --love-pink: #ff4d6d;
+            --love-red: #c9184a;
+            --gold: #d4af37;
+            --dark-bg: #0a0505;
+            --glass: rgba(255, 255, 255, 0.1);
+
+            /* Prismatic Color Palette from yes2.html */
+            --color-red: #ff3e6c;
+            --color-pistha: #93C572;
+            --color-magenta: #ff00ff;
+            --color-rose: #f33a73;
+            --color-violet: #8b5cf6;
+            --color-cyan: #00fff7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- VIEWPORT WRAPPER (Zoom Fix) --- */
+        #main-viewport {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: visible;
+            transform-origin: center center;
+        }
+
+        /* --- GLOBAL CURSOR --- */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            z-index: 999999;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            animation: heartBeat 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        #custom-cursor svg {
+            filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.8));
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            15% {
+                transform: translate(-50%, -50%) scale(1.25);
+            }
+
+            30% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            45% {
+                transform: translate(-50%, -50%) scale(1.15);
+            }
+
+            60% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            font-size: 24px;
+            color: var(--love-pink);
+            animation: floatFade 1s forwards;
+        }
+
+        @keyframes floatFade {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-30px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* --- UTILS --- */
+        .hidden {
+            display: none !important;
+            opacity: 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 2s forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        /* --- BACKGROUND FX --- */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background: radial-gradient(circle, transparent 50%, black 100%);
+            pointer-events: none;
+        }
+
+        /* --- 3D CANVAS (Spinning Ring) --- */
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            transition: all 1s;
+        }
+
+        /* --- PHASE 1: GATEWAY --- */
+        #gateway {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 30px 50px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 77, 109, 0.3);
+            transform: translateY(20px);
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes floatCardCentered {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.02) translateY(-10px);
+            }
+        }
+
+        .title-font {
+            font-family: 'Dancing Script', cursive;
+            color: var(--love-pink);
+        }
+
+        .cinematic-font {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 4px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--love-pink), var(--love-red));
+            color: white;
+            box-shadow: 0 0 25px rgba(255, 77, 109, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 10px 40px var(--love-pink);
+            background: linear-gradient(45deg, var(--love-red), var(--love-pink));
+        }
+
+        .romantic-btn {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 25px 50px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            border: 2px solid #ff4d6d;
+            /* Explicit Neon Pink */
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.4), inset 0 0 15px rgba(255, 77, 109, 0.2);
+            text-decoration: none;
+            color: white;
+            overflow: hidden;
+            animation: neonPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes neonPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(255, 77, 109, 0.4), inset 0 0 15px rgba(255, 77, 109, 0.2);
+                border-color: #ff4d6d;
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(255, 77, 109, 0.8), inset 0 0 20px rgba(255, 77, 109, 0.4);
+                border-color: #ff85a1;
+            }
+        }
+
+        /* Large, Sharp Vector Heart */
+        .heart-icon-btn {
+            width: 60px;
+            height: 60px;
+            z-index: 2;
+            animation:
+                realistic-heartbeat 1.2s infinite,
+                colorShift-prismatic 10s linear infinite;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .btn-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 4px;
+            font-size: 1.3rem;
+            z-index: 2;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+        }
+
+        .romantic-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 10px 40px rgba(255, 62, 108, 0.6);
+        }
+
+        /* Ensure YES and NO behave the same */
+        #yes-btn,
+        #no-btn {
+            min-width: 250px;
+        }
+
+        /* Keyframes for Multi-Color Cycle */
+        @keyframes colorShift-prismatic {
+            0% {
+                fill: var(--color-red);
+                color: var(--color-red);
+            }
+
+            20% {
+                fill: var(--color-pistha);
+                color: var(--color-pistha);
+            }
+
+            40% {
+                fill: var(--color-magenta);
+                color: var(--color-magenta);
+            }
+
+            60% {
+                fill: var(--color-rose);
+                color: var(--color-rose);
+            }
+
+            80% {
+                fill: var(--color-violet);
+                color: var(--color-violet);
+            }
+
+            100% {
+                fill: var(--color-red);
+                color: var(--color-red);
+            }
+        }
+
+        @keyframes borderGlow-prismatic {
+            0% {
+                border-color: var(--color-red);
+                box-shadow: 0 0 20px var(--color-red);
+            }
+
+            20% {
+                border-color: var(--color-pistha);
+                box-shadow: 0 0 20px var(--color-pistha);
+            }
+
+            40% {
+                border-color: var(--color-magenta);
+                box-shadow: 0 0 20px var(--color-magenta);
+            }
+
+            60% {
+                border-color: var(--color-rose);
+                box-shadow: 0 0 20px var(--color-rose);
+            }
+
+            80% {
+                border-color: var(--color-violet);
+                box-shadow: 0 0 20px var(--color-violet);
+            }
+
+            100% {
+                border-color: var(--color-red);
+                box-shadow: 0 0 20px var(--color-red);
+            }
+        }
+
+        @keyframes heartPump-prismatic {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.25);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.15);
+            }
+        }
+
+        /* Cinematic Heartbeat Animation */
+        @keyframes cinematicPulse {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+
+            15% {
+                transform: scale(1.25);
+                filter: brightness(1.3);
+            }
+
+            30% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+
+            45% {
+                transform: scale(1.15);
+                filter: brightness(1.2);
+            }
+
+            60% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #aaa;
+        }
+
+        /* BLINK GLOW FOR RESTART BUTTTON */
+        .blink-glow {
+            animation: glowPulser 1.5s infinite alternate;
+            border-color: var(--gold) !important;
+            color: var(--gold) !important;
+        }
+
+        @keyframes glowPulser {
+            from {
+                box-shadow: 0 0 10px var(--gold);
+                transform: scale(1);
+            }
+
+            to {
+                box-shadow: 0 0 30px var(--gold), 0 0 10px white;
+                transform: scale(1.1);
+            }
+        }
+
+        /* --- PHASE 2: INTRO --- */
+        #intro-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .cinematic-text {
+            font-size: 3rem;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transition: opacity 1.5s;
+        }
+
+        /* --- PHASE 3: PROPOSAL --- */
+        #proposal-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 800;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .proposal-text {
+            font-size: 3.5rem;
+            margin-bottom: 40px;
+            text-shadow: 0 0 30px var(--love-pink);
+            animation: pulseText 3s infinite;
+            font-family: 'Parisienne', cursive;
+            position: absolute;
+            top: 35%;
+            pointer-events: none;
+        }
+
+        #button-container {
+            position: absolute;
+            top: 60%;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            opacity: 0;
+            transition: opacity 2s;
+            height: 80px;
+            width: 100%;
+        }
+
+        #no-btn {
+            position: relative;
+        }
+
+        /* --- PHASE 4: TRANSITION & CELEBRATION --- */
+        /* Removed duplicate #heart-overlay */
+
+        #transition-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 30000;
+            /* Highest z-index */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+        }
+
+        .zoom-text {
+            font-family: 'Cinzel', 'Times New Roman', serif;
+            font-weight: 700;
+            font-size: 7rem;
+            /* Slightly larger */
+            background: linear-gradient(to bottom, #cf972d 0%, #f7ef8a 50%, #cf972d 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #d4af37;
+            /* Fallback color */
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6));
+            white-space: nowrap;
+        }
+
+        @keyframes zoomOut {
+            0% {
+                transform: scale(3);
+                opacity: 1;
+                /* Start visible */
+            }
+
+            10% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            90% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* CELEBRATION IMAGES GRID - CORNERS */
+        #celebration-images {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            display: none;
+            pointer-events: none;
+        }
+
+        .celeb-img {
+            position: absolute;
+            width: 16vw;
+            height: 22vw;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            object-fit: contain;
+            background: transparent;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* --- REALISTIC BEATING HEART --- */
+        .beating-heart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .beating-heart-svg {
+            width: 50px;
+            height: 50px;
+            fill: #ff4d6d;
+            filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.8));
+            animation: realistic-heartbeat 1.2s infinite;
+        }
+
+        .beating-heart-inline {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: #ff4d6d;
+            filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.8));
+            animation: realistic-heartbeat 1.2s infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes realistic-heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.3);
+            }
+
+            28% {
+                transform: scale(1);
+            }
+
+            42% {
+                transform: scale(1.2);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* --- PHASE 5: CONGRATS CARD (CENTERED) --- */
+        #congrats-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: 3;
+            display: none;
+            transition: all 0.8s ease-out;
+            width: 320px;
+            background: rgba(255, 255, 255, 0.05);
+            /* Very subtle glass */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            animation: floatCardCentered 5s ease-in-out infinite !important;
+            text-align: center;
+        }
+
+        .action-group {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-small {
+            padding: 12px;
+            font-size: 0.85rem;
+            margin: 0;
+            border-radius: 15px;
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* --- PHASE 6: SLIDESHOW --- */
+        #slideshow-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 4000;
+            background: rgba(0, 0, 0, 0.8);
+            /* Semi-transparent so galaxy is visible */
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s, transform 6s;
+            transform: scale(1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .slide-caption {
+            position: absolute;
+            top: 30px;
+            width: 100%;
+            text-align: center;
+            font-family: 'Dancing Script';
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px black;
+            z-index: 4001;
+            pointer-events: none;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 4002;
+        }
+
+        /* --- AUDIO EQ --- */
+        .eq-bar {
+            display: inline-block;
+            width: 4px;
+            height: 15px;
+            background: var(--love-pink);
+            animation: eq 1s infinite;
+            margin: 0 1px;
+        }
+
+        @keyframes eq {
+
+            0%,
+            100% {
+                height: 5px;
+            }
+
+            50% {
+                height: 20px;
+            }
+        }
+
+        /* --- CINEMATIC FX LAYER (from eff.html) --- */
+        .fx-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5000;
+        }
+
+        .grand-shape {
+            position: absolute;
+            filter: blur(1px);
+            opacity: 0;
+            transform-origin: center center;
+        }
+
+        @keyframes grand-sweep {
+            0% {
+                transform: scale(0) translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(5) translate(var(--tx), var(--ty)) rotate(var(--tr));
+                opacity: 0;
+            }
+        }
+
+        #heart-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background: #ff4d6d;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            /* Using standard heart clip mask */
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z"/></svg>');
+            -webkit-mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z"/></svg>');
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        #full-screen-love-gradient {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #ff4d6d, #c9184a, #ff758c);
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Audio -->
+    <audio id="bgm-intro">
+        <source src="https://github.com/DINESHSURRYA/junior/raw/main/Enna%20Solla%20Pogirai%20Bgm.mp3"
+            type="audio/mpeg">
+    </audio>
+    <audio id="bgm-celeb" loop>
+        <source
+            src="https://github.com/DINESHSURRYA/junior/raw/main/Yen%20Moochavan%20Pechavan%20-%20Oorum%20Blood%20_%20Dude%20_%20Tamil.mp3"
+            type="audio/mpeg">
+    </audio>
+    <audio id="bgm-story" loop>
+        <source src="https://github.com/DINESHSURRYA/junior/raw/main/Aaha_Kalyanam.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Cursor -->
+    <div id="custom-cursor">
+        <svg viewBox="0 0 32 32" style="width: 100%; height: 100%; fill: #ff4d6d;">
+            <path
+                d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+        </svg>
+    </div>
+
+    <!-- Background (Stays outside or inside, let's keep inside viewport for sync) -->
+    <div id="main-viewport">
+        <canvas id="bg-canvas"></canvas>
+        <div class="vignette"></div>
+        <div id="canvas-container"></div>
+
+        <!-- Phase 1: Gateway -->
+        <div id="gateway">
+            <div class="glass-card">
+                <h1 class="title-font" style="font-size: 3rem; margin-bottom: 20px;">Before we begin...</h1>
+                <p class="cinematic-font" style="margin-bottom: 30px;">May I play something special for us?</p>
+                <button class="btn btn-primary" onclick="enterExperience(true)">
+                    <span>Enable Music 🎶</span>
+                    <div style="display:flex; justify-content:center; margin-top:5px;">
+                        <span class="eq-bar" style="animation-delay:0s"></span>
+                        <span class="eq-bar" style="animation-delay:0.2s"></span>
+                        <span class="eq-bar" style="animation-delay:0.4s"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Phase 2: Intro -->
+        <div id="intro-layer">
+            <h1 id="intro-text" class="cinematic-font cinematic-text"></h1>
+        </div>
+
+        <!-- Phase 3: Proposal -->
+        <div id="proposal-layer">
+            <h1 class="proposal-text">Will You Be My<br>Valentine?</h1>
+            <div id="button-container">
+                <button id="yes-btn" class="romantic-btn" onclick="acceptProposal()">
+                    <svg class="heart-icon-btn" viewBox="0 0 32 32">
+                        <path
+                            d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+                    </svg>
+                    <span class="btn-text">YES</span>
+                </button>
+                <button id="no-btn" class="romantic-btn">
+                    <svg class="heart-icon-btn" viewBox="0 0 32 32">
+                        <path
+                            d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+                    </svg>
+                    <span class="btn-text">NO</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="full-screen-love-gradient"></div>
+        <div id="heart-overlay"></div>
+        <div id="fx-layer" class="fx-overlay"></div>
+        <div id="transition-layer">
+            <div class="beating-heart-container" style="position: absolute; opacity: 0.6; transform: scale(3.5);">
+                <svg class="beating-heart-svg" viewBox="0 0 32 32" style="width: 150px; height: 150px;">
+                    <path
+                        d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+                </svg>
+            </div>
+            <h1 class="zoom-text" style="z-index: 10;">
+                Dharshini
+                <svg class="beating-heart-inline" viewBox="0 0 32 32">
+                    <path
+                        d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+                </svg>
+            </h1>
+        </div>
+        <div id="celebration-images"></div>
+
+        <div id="congrats-card" class="glass-card">
+            <div class="beating-heart-container">
+                <svg class="beating-heart-svg" viewBox="0 0 32 32">
+                    <path
+                        d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+                </svg>
+            </div>
+            <h1 class="title-font" style="color: var(--gold); font-size: 1.8rem; margin:0;">My Universe Found</h1>
+            <p style="margin: 8px 0 15px; font-size: 0.95rem; opacity: 0.9;">Dharshini, you are my forever.</p>
+
+            <div class="action-group">
+                <button class="btn btn-primary btn-small" onclick="startSlideshow()" style="width:100% !important;">OUR
+                    LOVE
+                    STORY 💑</button>
+                <div class="btn-row">
+                    <button class="btn btn-secondary btn-small" onclick="restartCelebration()">REPLAY ↺</button>
+                    <button class="btn btn-secondary btn-small" onclick="location.reload()">HOME 🏠</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 6: Slideshow -->
+        <div id="slideshow-layer">
+            <div id="slide-container"></div>
+            <div class="slide-caption">Every moment with you is magic... ✨</div>
+            <div class="controls">
+                <button id="restart-slideshow-btn" class="btn btn-secondary" onclick="startSlideshow()">Restart
+                    Slideshow</button>
+                <button class="btn btn-primary" onclick="location.reload()">Home 🏠</button>
+            </div>
+        </div>
+
+        <script>
+            // --- CONFIG ---
+            let audioAllowed = false, buttonsEnabled = false;
+            let scene, camera, renderer, composer, ringGroup, mainRing, innerRing, diamondGroup, stars;
+            let isCelebrating = false;
+            let slideshowInterval;
+
+            const tracks = {
+                intro: document.getElementById('bgm-intro'),
+                celeb: document.getElementById('bgm-celeb'),
+                story: document.getElementById('bgm-story')
+            };
+            const emojis = ['❤️', '💕', '💖', '💘', '💝', '💋', '😘'];
+            const noBtn = document.getElementById('no-btn');
+
+            // --- 3D SCENE SETUP ---
+            function init3D() {
+                if (scene) return;
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 5;
+
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+                // Bloom Pass Setup
+                const renderScene = new THREE.RenderPass(scene, camera);
+                const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.8, 0.4, 0.85);
+                bloomPass.threshold = 0;
+                bloomPass.strength = 1.0;
+                bloomPass.radius = 0.5;
+
+                composer = new THREE.EffectComposer(renderer);
+                composer.addPass(renderScene);
+                composer.addPass(bloomPass);
+
+                ringGroup = new THREE.Group();
+                scene.add(ringGroup);
+
+                // 1. MAIN RING: Gold
+                // 1. MAIN RING: Premium Gold
+                const ringGeo = new THREE.TorusGeometry(1.3, 0.15, 64, 128);
+                const ringMat = new THREE.MeshPhysicalMaterial({
+                    color: 0xD4AF37,
+                    metalness: 1,
+                    roughness: 0.2,
+                    clearcoat: 1,
+                    clearcoatRoughness: 0.1,
+                    emissive: 0xff4da6,
+                    emissiveIntensity: 0.15
+                });
+                mainRing = new THREE.Mesh(ringGeo, ringMat);
+                ringGroup.add(mainRing);
+
+                // 2. INNER LINING: Pink (Emissive)
+                const innerGeo = new THREE.TorusGeometry(1.3, 0.08, 32, 128);
+                const innerMat = new THREE.MeshStandardMaterial({
+                    color: 0xff3e6c, emissive: 0xff3e6c, emissiveIntensity: 0,
+                    transparent: true, opacity: 0
+                });
+                innerRing = new THREE.Mesh(innerGeo, innerMat);
+                ringGroup.add(innerRing);
+
+                // DIAMOND GROUP: Brilliant Cut
+                diamondGroup = new THREE.Group();
+                diamondGroup.position.y = 1.4;
+                ringGroup.add(diamondGroup);
+
+                const diaMat = new THREE.MeshPhysicalMaterial({
+                    color: 0xffffff, metalness: 0.1, roughness: 0,
+                    transmission: 0.7, ior: 2.4, thickness: 1,
+                    flatShading: true, clearcoat: 1
+                });
+
+                const crownGeo = new THREE.CylinderGeometry(0.25, 0.45, 0.3, 8);
+                const crown = new THREE.Mesh(crownGeo, diaMat);
+                crown.position.y = 0.15;
+                diamondGroup.add(crown);
+
+                const pavilionGeo = new THREE.ConeGeometry(0.45, 0.6, 8);
+                const pavilion = new THREE.Mesh(pavilionGeo, diaMat);
+                pavilion.position.y = -0.3;
+                pavilion.rotation.x = Math.PI;
+                diamondGroup.add(pavilion);
+
+                // Lighting Enhancement
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+                directionalLight.position.set(5, 5, 5);
+                scene.add(directionalLight);
+
+                const pinkAmbient = new THREE.AmbientLight(0xffc0cb, 0.5);
+                scene.add(pinkAmbient);
+
+                const pointLight = new THREE.PointLight(0xffffff, 1, 50);
+                pointLight.position.set(-5, 3, 5);
+                scene.add(pointLight);
+
+                const starGeo = new THREE.BufferGeometry();
+                const starCount = 1500;
+                const posArray = new Float32Array(starCount * 3);
+                for (let i = 0; i < starCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 40;
+                starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+                const starMat = new THREE.PointsMaterial({ size: 0.03, color: 0xffffff });
+                stars = new THREE.Points(starGeo, starMat);
+                scene.add(stars);
+
+                animate();
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                stars.rotation.y += 0.0003;
+
+                if (buttonsEnabled && !isCelebrating) {
+                    ringGroup.rotation.y += 0.03; // Smooth elegant rotation when buttons active
+                    ringGroup.rotation.x = Math.sin(Date.now() * 0.001) * 0.1;
+                } else if (isCelebrating) {
+                    ringGroup.rotation.y += 0.06;
+                    ringGroup.scale.setScalar(1.5 + Math.sin(Date.now() * 0.005) * 0.05);
+                }
+
+                if (diamondGroup) diamondGroup.rotation.y += 0.02;
+                composer.render();
+            }
+
+            // --- EVENTS ---
+            const cursor = document.getElementById('custom-cursor');
+            function moveCursor(e) {
+                let x = e.clientX, y = e.clientY;
+                if (e.touches && e.touches.length > 0) { x = e.touches[0].clientX; y = e.touches[0].clientY; }
+                cursor.style.left = x + 'px'; cursor.style.top = y + 'px';
+                if (Math.random() > 0.9) {
+                    const el = document.createElement('div'); el.className = 'cursor-trail'; el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = x + 'px'; el.style.top = y + 'px'; document.body.appendChild(el); setTimeout(() => el.remove(), 1000);
+                }
+                evadeNoButton(x, y);
+            }
+            window.addEventListener('mousemove', moveCursor); window.addEventListener('touchmove', moveCursor);
+
+            function evadeNoButton(mx, my) {
+                if (isCelebrating || !noBtn) return;
+                const rect = noBtn.getBoundingClientRect();
+                const yesBtn = document.getElementById('yes-btn');
+                const yesRect = yesBtn.getBoundingClientRect();
+
+                // Distance from mouse to center of No button
+                const dist = Math.hypot(mx - (rect.left + rect.width / 2), my - (rect.top + rect.height / 2));
+
+                // If mouse is close, jump!
+                if (dist < 100) {
+                    let newX, newY;
+                    let attempts = 0;
+                    const margin = 100;
+
+                    // Try finding a position that doesn't overlap the Yes button
+                    do {
+                        newX = Math.random() * (window.innerWidth - rect.width - margin * 2) + margin;
+                        newY = Math.random() * (window.innerHeight - rect.height - margin * 2) + margin;
+                        attempts++;
+
+                        // Check distance from Yes button instead of just rect overlap for better "spacing"
+                        const yesCenterX = yesRect.left + yesRect.width / 2;
+                        const yesCenterY = yesRect.top + yesRect.height / 2;
+                        const distFromYes = Math.hypot(newX + rect.width / 2 - yesCenterX, newY + rect.height / 2 - yesCenterY);
+
+                        if (distFromYes > 250) break; // Good position found
+                    } while (attempts < 20);
+
+                    noBtn.style.position = 'fixed';
+                    noBtn.style.left = newX + 'px';
+                    noBtn.style.top = newY + 'px';
+                    noBtn.style.zIndex = "1000"; // Ensure it stays on top but doesn't block Yes unless jumping
+                }
+            }
+
+            function enterExperience(b) {
+                audioAllowed = b;
+                document.getElementById('gateway').classList.add('fade-out');
+                setTimeout(() => document.getElementById('gateway').style.display = 'none', 1000);
+                if (b) { tracks.intro.play(); tracks.intro.volume = 0; fadeIn(tracks.intro, 0.4); }
+                init3D(); startIntroSequence();
+            }
+            function fadeIn(a, t) { let v = 0; const i = setInterval(() => { v += 0.05; if (v >= t) { v = t; clearInterval(i); } a.volume = v; }, 200); }
+            function fadeOut(a) { const i = setInterval(() => { a.volume -= 0.05; if (a.volume <= 0) { a.pause(); clearInterval(i); } }, 200); }
+
+            function startIntroSequence() {
+                const l = document.getElementById('intro-layer'), t = document.getElementById('intro-text');
+                l.style.display = 'flex';
+                const seq = [
+                    { text: "In a world of billions...", d: 1000 },
+                    { text: "I found my universe...", d: 6000 },
+                    { text: "In you, Dharshini ❤️", d: 11000 },
+                    { text: "My heart beats for you...", d: 18000 },
+                    { text: "Every second with you is a gift...", d: 25000 }
+                ];
+                seq.forEach(s => setTimeout(() => {
+                    t.style.opacity = 0;
+                    setTimeout(() => { t.innerText = s.text; t.style.opacity = 1; }, 1000);
+                }, s.d));
+
+                // Buttons appear after 33 seconds per user request
+                setTimeout(() => {
+                    l.classList.add('fade-out');
+                    setTimeout(() => {
+                        l.style.display = 'none';
+                        startProposalScene();
+                    }, 500);
+                }, 32500);
+            }
+
+            function startProposalScene() {
+                buttonsEnabled = true;
+                document.getElementById('proposal-layer').style.display = 'flex';
+                document.getElementById('proposal-layer').classList.add('fade-in');
+                setTimeout(() => {
+                    document.getElementById('button-container').style.opacity = 1;
+                }, 500);
+            }
+
+            function acceptProposal() {
+                isCelebrating = true;
+                const yesBtn = document.getElementById('yes-btn');
+                const noBtn = document.getElementById('no-btn');
+                const overlay = document.getElementById('heart-overlay');
+                const loveGradient = document.getElementById('full-screen-love-gradient');
+                const proposalLayer = document.getElementById('proposal-layer');
+                const transLayer = document.getElementById('transition-layer');
+
+                // Step 1: Hide NO and Prep YES
+                noBtn.style.opacity = '0';
+                setTimeout(() => noBtn.style.display = 'none', 500);
+
+                // Morph YES into a pure heart icon
+                yesBtn.style.animation = 'none';
+                yesBtn.style.background = 'transparent';
+                yesBtn.style.backdropFilter = 'none';
+                yesBtn.style.border = 'none';
+                yesBtn.style.boxShadow = 'none';
+                yesBtn.querySelector('.btn-text').style.opacity = '0';
+
+                const rect = yesBtn.getBoundingClientRect();
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                // Move morphing heart to center
+                gsap.to(yesBtn, {
+                    x: centerX - (rect.left + rect.width / 2),
+                    y: centerY - (rect.top + rect.height / 2),
+                    scale: 1.8,
+                    duration: 1,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        // Step 2: Sudden Expansion
+                        yesBtn.style.display = 'none';
+                        overlay.style.opacity = 1;
+                        gsap.set(overlay, { scale: 0.1 });
+
+                        gsap.to(overlay, {
+                            scale: 200, // Massive expansion to ensure coverage
+                            duration: 1.5,
+                            ease: "power3.in",
+                            onStart: () => {
+                                if (audioAllowed) fadeOut(tracks.intro);
+                                loveGradient.style.opacity = 1;
+                            },
+                            onComplete: () => {
+                                // Step 3: Reveal Name Reveal Layer
+                                overlay.style.opacity = 0; // Hide overlay once screen is covered
+                                transLayer.style.display = 'flex';
+                                gsap.set(transLayer, { opacity: 1 });
+
+                                const nameText = transLayer.querySelector('.zoom-text');
+                                nameText.style.animation = 'zoomOut 9s ease-out forwards';
+
+                                if (audioAllowed) {
+                                    tracks.celeb.currentTime = 0;
+                                    tracks.celeb.volume = 0;
+                                    tracks.celeb.play();
+                                    fadeIn(tracks.celeb, 1);
+                                }
+
+                                setTimeout(() => {
+                                    gsap.to(transLayer, {
+                                        opacity: 0,
+                                        duration: 2,
+                                        onComplete: () => {
+                                            transLayer.style.display = 'none';
+                                            loveGradient.style.opacity = 0;
+                                            proposalLayer.style.display = 'none';
+                                            triggerCelebration();
+                                        }
+                                    });
+                                }, 7000);
+                            }
+                        });
+                    }
+                });
+
+                // Confetti Impact
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 250,
+                        spread: 120,
+                        origin: { y: 0.5 },
+                        colors: ['#ff4d6d', '#ffd700', '#ffffff'],
+                        scalar: 1.8
+                    });
+                }, 1000);
+
+                innerRing.material.opacity = 1;
+                innerRing.material.emissiveIntensity = 3;
+            }
+
+            function restartCelebration() {
+                isCelebrating = true;
+                document.getElementById('celebration-images').innerHTML = '';
+                document.getElementById('congrats-card').style.display = 'none';
+                triggerCelebration();
+            }
+
+            // PHOTO URLS FROM TXT FILES
+            const rawBase = "https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/";
+            const loverPhotosRaw = [
+                rawBase + "das/photo_2026-02-10_21-08-02.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-13.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-19.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-25.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-33.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-40.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-50.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-51.jpg",
+                rawBase + "das/photo_2026-02-10_21-12-55.jpg",
+                rawBase + "das/photo_2026-02-10_21-13-03.jpg",
+                rawBase + "das/photo_2026-02-10_21-13-06.jpg",
+                rawBase + "das/photo_2026-02-10_21-14-50.jpg",
+                rawBase + "das/photo_2026-02-10_21-14-57.jpg",
+                rawBase + "das/photo_2026-02-10_21-15-04.jpg"
+            ];
+
+            const slideshowPhotos = [
+                rawBase + "dsdas/photo_2026-02-10_21-06-50.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-07-31.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-07-37.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-09-16.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-09-21.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-09-24.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-10-48.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-10-56.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-11-08.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-11-15.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-11-32.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-11-36.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-11-39.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-11-50.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-13-22.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-13-50.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-14-38.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-17-29.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-17-36.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-17-58.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-18-15.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-18-21.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-18-31.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-18-45.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-18-51.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-02.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-05.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-07.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-09.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-17.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-21.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-40.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-49.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-19-55.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-20-13.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-20-21.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-20-25.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-20-43.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-22-46.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-22-53.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-22-55.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-23-05.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-23-39.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-23-41.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-23-51.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-23-54.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-24-08.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-24-16.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-24-25.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-24-29.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-25-37.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-25-47.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-25-50.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-25-59.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-26-27.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-26-38.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-28-44.jpg",
+                rawBase + "dsdas/photo_2026-02-10_21-28-57.jpg"
+            ];
+
+            function triggerCelebration() {
+                const container = document.getElementById('celebration-images');
+                container.innerHTML = '';
+                container.style.display = 'block';
+
+                // 1. Shuffle photos for true randomness
+                const photos = [...loverPhotosRaw].sort(() => Math.random() - 0.5);
+                const tl = gsap.timeline();
+
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+
+                // 2. Define safe bounds (assuming images are ~16vw wide and up to ~25vw high)
+                const iw = vw * 0.16;
+                const ih_est = vw * 0.25; // Safe height estimate for clamping
+
+                // 3. Create a grid of cells to ensure balance without hardcoding coordinates
+                let cells = [];
+                const cols = 5;
+                const rows = 4;
+                const cw = vw / cols;
+                const ch = vh / rows;
+
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        // Avoid the center area where the card and ring are
+                        // Excluding middle 3 columns in the middle 2 rows
+                        const isCenter = (r >= 1 && r <= 2) && (c >= 1 && c <= 3);
+                        if (!isCenter) {
+                            cells.push({ r, c });
+                        }
+                    }
+                }
+
+                // Shuffle cells so photos don't always fill in the same order
+                cells.sort(() => Math.random() - 0.5);
+
+                photos.forEach((url, i) => {
+                    if (i >= cells.length) return;
+
+                    const cell = cells[i];
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'celeb-img';
+
+                    // 4. Calculate random position within cell while staying within safe bounds
+                    // Range in X: [cell_start, cell_end - image_width]
+                    let randX = cell.c * cw + (Math.random() * (cw - iw));
+                    let randY = cell.r * ch + (Math.random() * (ch - ih_est));
+
+                    // Final safety clamping to ensure NO part of the image is outside the viewport
+                    const x = Math.max(10, Math.min(randX, vw - iw - 10));
+                    const y = Math.max(10, Math.min(randY, vh - ih_est - 10));
+
+                    img.style.left = x + 'px';
+                    img.style.top = y + 'px';
+
+                    // 5. Randomize rotation between -20 and 20 degrees
+                    const rot = (Math.random() * 40 - 20);
+                    img.style.transform = `scale(0) rotate(${rot}deg)`;
+                    container.appendChild(img);
+
+                    const entryPoints = [
+                        { x: -800, y: 0 },
+                        { x: 800, y: 0 },
+                        { x: 0, y: -800 },
+                        { x: 0, y: 800 }
+                    ];
+                    const entry = entryPoints[Math.floor(Math.random() * entryPoints.length)];
+
+                    tl.fromTo(img,
+                        { x: entry.x, y: entry.y, opacity: 0, scale: 0.5, rotation: rot + (Math.random() * 20 - 10) },
+                        {
+                            x: 0,
+                            y: 0,
+                            opacity: 1,
+                            scale: 1,
+                            rotation: rot,
+                            duration: 1,
+                            ease: "power3.out",
+                            onStart: () => photoCelebration({ left: x + 'px', top: y + 'px' })
+                        }, i * 0.7);
+                });
+
+                tl.add(() => {
+                    finalGrandCelebration();
+                }, "+=0.5");
+            }
+
+            // --- CINEMATIC EFFECTS (Inspired by eff.html) ---
+            const SVG_PATHS = {
+                HEART: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z",
+                FLARE: "M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z"
+            };
+
+            function spawnGrand(x, y, type, color, size = 300) {
+                const fxLayer = document.getElementById('fx-layer');
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+                svg.setAttribute("viewBox", "0 0 24 24");
+                svg.style.width = size + "px";
+                svg.style.height = size + "px";
+                svg.classList.add("grand-shape");
+
+                path.setAttribute("d", SVG_PATHS[type]);
+                path.setAttribute("fill", color);
+                svg.appendChild(path);
+
+                svg.style.left = x + "px";
+                svg.style.top = y + "px";
+
+                const tx = (x < window.innerWidth / 2) ? "120vw" : "-120vw";
+                const ty = (y < window.innerHeight / 2) ? "120vh" : "-120vh";
+                svg.style.setProperty('--tx', tx);
+                svg.style.setProperty('--ty', ty);
+                svg.style.setProperty('--tr', (Math.random() * 720) + "deg");
+
+                svg.style.animation = "grand-sweep 4s forwards cubic-bezier(0.1, 0.8, 0.3, 1)";
+
+                fxLayer.appendChild(svg);
+                setTimeout(() => svg.remove(), 4000);
+            }
+
+            const cinematicEffects = [
+                () => { // Massive Heart Crossing
+                    spawnGrand(0, 0, 'HEART', 'var(--color-red)', 500);
+                    spawnGrand(window.innerWidth, window.innerHeight, 'HEART', 'var(--color-red)', 500);
+                },
+                () => { // Starlight Storm
+                    for (let i = 0; i < 6; i++) spawnGrand(Math.random() * window.innerWidth, 0, 'FLARE', 'white', 400);
+                },
+                () => { // Golden Wash
+                    spawnGrand(window.innerWidth / 2, window.innerHeight / 2, 'FLARE', '#D4AF37', 1000);
+                },
+                () => { // Silk Curtain Sweep
+                    const colors = ['var(--color-magenta)', 'white', 'var(--color-rose)'];
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            spawnGrand(Math.random() * window.innerWidth, window.innerHeight, 'HEART', colors[i % 3], 600);
+                        }, i * 200);
+                    }
+                },
+                () => { // Corner Union
+                    spawnGrand(0, 0, 'HEART', 'white', 300);
+                    spawnGrand(window.innerWidth, 0, 'HEART', 'white', 300);
+                    spawnGrand(0, window.innerHeight, 'HEART', 'white', 300);
+                    spawnGrand(window.innerWidth, window.innerHeight, 'HEART', 'white', 300);
+                },
+                () => { // Ruby Explosion
+                    for (let i = 0; i < 8; i++) {
+                        spawnGrand(window.innerWidth / 2, window.innerHeight / 2, 'HEART', 'var(--color-red)', 300 + (i * 60));
+                    }
+                },
+                () => { // Golden Horizon
+                    spawnGrand(-100, window.innerHeight / 2, 'FLARE', 'gold', 800);
+                    spawnGrand(window.innerWidth, window.innerHeight / 2, 'FLARE', 'gold', 800);
+                },
+                () => { // Triple Heart Pulse
+                    spawnGrand(0, window.innerHeight, 'HEART', 'pink', 700);
+                    spawnGrand(window.innerWidth, 0, 'HEART', 'pink', 700);
+                },
+                () => { // Deep Crimson Wash
+                    spawnGrand(0, 0, 'HEART', '#4e0000', 1200);
+                    spawnGrand(window.innerWidth, window.innerHeight, 'HEART', '#4e0000', 1200);
+                },
+                () => { // Rose Gold Rain
+                    for (let i = 0; i < 5; i++) spawnGrand(i * (window.innerWidth / 4), -200, 'FLARE', 'var(--gold)', 400);
+                },
+                () => { // THE DHARSHINI SUPREME
+                    const overlay = document.getElementById('heart-overlay');
+                    overlay.style.opacity = 0.2;
+                    setTimeout(() => overlay.style.opacity = 0, 500);
+                    cinematicEffects[0](); cinematicEffects[1](); cinematicEffects[4]();
+                }
+            ];
+
+            function triggerCinematicMoment(index = -1) {
+                const effect = index === -1
+                    ? cinematicEffects[Math.floor(Math.random() * cinematicEffects.length)]
+                    : cinematicEffects[index % cinematicEffects.length];
+                effect();
+            }
+
+            function photoCelebration(pos) {
+                const x = (parseFloat(pos.left) + 8) / 100; // Offset for img center
+                const y = (parseFloat(pos.top) + 11) / 100;
+
+                // 1. Particle Confetti
+                confetti({
+                    particleCount: 25,
+                    spread: 60,
+                    origin: { x, y },
+                    colors: ['#ff4d6d', '#ffffff', '#ffd700'],
+                    shapes: ['circle', 'heart'],
+                    gravity: 0.8,
+                    scalar: 0.8
+                });
+
+                // 2. Cinematic SVG Punch
+                if (Math.random() > 0.5) {
+                    triggerCinematicMoment();
+                }
+            }
+
+            function finalGrandCelebration() {
+                // Massive initial burst
+                confetti({
+                    particleCount: 250,
+                    spread: 180,
+                    origin: { y: 0.6 },
+                    colors: ['#ff4d6d', '#ff85a1', '#ffd700', '#ffffff'],
+                    scalar: 1.2
+                });
+
+                // Hearts raining effect
+                const end = Date.now() + 10000;
+                (function rain() {
+                    confetti({
+                        particleCount: 10,
+                        angle: 90,
+                        spread: 360,
+                        origin: { x: Math.random(), y: -0.1 },
+                        colors: ['#ff4d6d'],
+                        gravity: 0.5,
+                        scalar: 1.5,
+                        shapes: ['circle']
+                    });
+                    if (Date.now() < end) requestAnimationFrame(rain);
+                }());
+
+                const card = document.getElementById('congrats-card');
+                card.style.display = 'block';
+                gsap.fromTo(card, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1.1, duration: 1.5, ease: "back.out(1.2)" });
+
+                // Card floating & glow effect
+                gsap.to(card, {
+                    boxShadow: "0 0 100px rgba(255, 77, 109, 0.9)",
+                    repeat: -1,
+                    yoyo: true,
+                    duration: 1.5
+                });
+            }
+
+            function massiveCelebration() {
+                // 1. Massive Confetti Blast
+                const end = Date.now() + (6 * 1000);
+                const colors = ['#ff4d6d', '#ffd700', '#ffffff', '#ff0000', '#ff85a1'];
+
+                (function frame() {
+                    confetti({
+                        particleCount: 10,
+                        angle: 60,
+                        spread: 60,
+                        origin: { x: 0, y: 0.7 },
+                        colors: colors
+                    });
+                    confetti({
+                        particleCount: 10,
+                        angle: 120,
+                        spread: 60,
+                        origin: { x: 1, y: 0.7 },
+                        colors: colors
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+
+                // 2. Firework Animation 
+                const explode = setInterval(() => {
+                    confetti({
+                        particleCount: 80,
+                        spread: 120,
+                        origin: { x: Math.random(), y: Math.random() * 0.5 },
+                        colors: ['#ffd700', '#ff4d6d'],
+                        scalar: 1.5
+                    });
+                }, 500);
+                setTimeout(() => clearInterval(explode), 5000);
+
+                // 3. Screen Shake
+                gsap.to("#main-viewport", {
+                    x: 8,
+                    duration: 0.05,
+                    repeat: 15,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+
+                // 4. Background Sparkle Flash
+                gsap.to(p, {
+                    s: 6,
+                    a: 1,
+                    duration: 0.5,
+                    repeat: 5,
+                    yoyo: true
+                });
+
+                // 5. Button Pulse
+                gsap.to(".btn-primary", { scale: 1.3, duration: 0.3, yoyo: true, repeat: 3 });
+            }
+
+            function startSlideshow() {
+                massiveCelebration();
+                if (slideshowInterval) clearInterval(slideshowInterval);
+                document.getElementById('congrats-card').style.display = 'none';
+                document.getElementById('restart-slideshow-btn').classList.remove('blink-glow');
+
+                const layer = document.getElementById('slideshow-layer');
+                layer.style.display = 'block';
+                const container = document.getElementById('slide-container');
+                container.innerHTML = '';
+
+                if (audioAllowed) { fadeOut(tracks.celeb); tracks.story.play().catch(e => console.log(e)); }
+
+                slideshowPhotos.forEach((url) => {
+                    const s = document.createElement('div'); s.className = 'slide'; s.style.backgroundImage = `url('${url}')`; container.appendChild(s);
+                });
+
+                const slides = document.querySelectorAll('.slide');
+                let cs = 0; slides[0].classList.add('active');
+
+                // Trigger first slide's effect
+                triggerCinematicMoment(0);
+
+                slideshowInterval = setInterval(() => {
+                    slides[cs].classList.remove('active'); cs++;
+                    if (cs >= slides.length) {
+                        clearInterval(slideshowInterval);
+                        if (audioAllowed) fadeOut(tracks.story); // Stop song at end 
+                        document.getElementById('restart-slideshow-btn').classList.add('blink-glow');
+                        return;
+                    }
+                    slides[cs].classList.add('active');
+
+                    // Trigger effect based on slide index (cycling top 11 effects)
+                    triggerCinematicMoment(cs);
+                }, 2500);
+            }
+
+            const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const p = []; for (let i = 0; i < 80; i++) p.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 2, a: Math.random() });
+            function animateBg() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                p.forEach(pp => { pp.y -= 0.2; pp.a -= 0.003; if (pp.a <= 0) { pp.y = canvas.height; pp.a = 1; } ctx.fillStyle = `rgba(255,62,108,${pp.a})`; ctx.beginPath(); ctx.arc(pp.x, pp.y, pp.s, 0, Math.PI * 2); ctx.fill(); });
+                requestAnimationFrame(animateBg);
+            }
+            animateBg();
+
+            // Respond to Zoom / Window Scaling
+            window.addEventListener('resize', () => {
+                if (camera && renderer) {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                }
+                if (canvas) {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+            });
+        </script>
+    </div> <!-- End main-viewport -->
+</body>
+
+</html>

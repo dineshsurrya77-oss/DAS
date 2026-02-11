@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharshini - Ultra Cinematic</title>
+    <style>
+        :root {
+            --rose-gold: #e7bc91;
+            --ruby: #a4161a;
+            --silk: #ffb3c1;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #050102;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* The central focus for Dharshini's pictures */
+        #photo-stage {
+            width: 380px;
+            height: 520px;
+            background: #111;
+            border: 1px solid rgba(231, 188, 145, 0.2);
+            box-shadow: 0 0 100px rgba(0,0,0,1);
+            z-index: 50;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Large Effect Layer */
+        .fx-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .grand-shape {
+            position: absolute;
+            filter: blur(1px);
+            opacity: 0;
+        }
+
+        /* Animations for BIG movements */
+        @keyframes grand-sweep {
+            0% { transform: scale(0) translate(0, 0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            100% { transform: scale(4) translate(var(--tx), var(--ty)) rotate(var(--tr)); opacity: 0; }
+        }
+
+        @keyframes silk-flow {
+            0% { transform: scale(1) translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(3) translateY(-100vh) rotate(90deg); opacity: 0; }
+        }
+
+        .btn-celebrate {
+            position: fixed;
+            bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--rose-gold);
+            color: var(--rose-gold);
+            padding: 15px 50px;
+            cursor: pointer;
+            font-family: 'Serif';
+            letter-spacing: 5px;
+            z-index: 1000;
+            transition: 0.5s;
+        }
+
+        .btn-celebrate:hover {
+            background: var(--rose-gold);
+            color: black;
+            box-shadow: 0 0 30px var(--rose-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="photo-stage">
+        <span style="color: var(--rose-gold); opacity: 0.3;">DHARSHINI</span>
+    </div>
+
+    <button class="btn-celebrate" onclick="triggerGrandEffect()">CELEBRATE</button>
+
+    <div id="fx-layer" class="fx-overlay"></div>
+
+    <script>
+        const fxLayer = document.getElementById('fx-layer');
+        let currentIdx = 0;
+
+        const SVG_PATHS = {
+            HEART: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z",
+            FLARE: "M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z",
+            RIBBON: "M0,50 Q25,0 50,50 T100,50"
+        };
+
+        function spawnGrand(x, y, type, color, size = 200) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            
+            svg.setAttribute("viewBox", "0 0 24 24");
+            svg.style.width = size + "px";
+            svg.style.height = size + "px";
+            svg.classList.add("grand-shape");
+            
+            path.setAttribute("d", SVG_PATHS[type]);
+            path.setAttribute("fill", color);
+            svg.appendChild(path);
+
+            // Positioning
+            svg.style.left = x + "px";
+            svg.style.top = y + "px";
+
+            // Motion logic
+            const tx = (x < window.innerWidth/2) ? "100vw" : "-100vw";
+            const ty = (y < window.innerHeight/2) ? "100vh" : "-100vh";
+            svg.style.setProperty('--tx', tx);
+            svg.style.setProperty('--ty', ty);
+            svg.style.setProperty('--tr', (Math.random() * 360) + "deg");
+
+            svg.style.animation = "grand-sweep 3s forwards ease-in-out";
+            
+            fxLayer.appendChild(svg);
+            setTimeout(() => svg.remove(), 3000);
+        }
+
+        const effects = [
+            // 1. Massive Heart Crossing
+            () => {
+                spawnGrand(0, 0, 'HEART', 'var(--ruby)', 400);
+                spawnGrand(window.innerWidth, window.innerHeight, 'HEART', 'var(--ruby)', 400);
+            },
+            // 2. Rose Gold Flares
+            () => {
+                spawnGrand(window.innerWidth, 0, 'FLARE', 'var(--rose-gold)', 500);
+                spawnGrand(0, window.innerHeight, 'FLARE', 'var(--rose-gold)', 500);
+            },
+            // 3. Silk Curtain Sweep
+            () => {
+                const colors = ['var(--silk)', 'white', 'var(--rose-gold)'];
+                for(let i=0; i<5; i++) {
+                    setTimeout(() => {
+                        spawnGrand(Math.random()*window.innerWidth, window.innerHeight, 'HEART', colors[i%3], 600);
+                    }, i * 200);
+                }
+            },
+            // 4. Corner Union (4 Massive Hearts meeting)
+            () => {
+                spawnGrand(0,0,'HEART','white', 300);
+                spawnGrand(window.innerWidth, 0, 'HEART', 'white', 300);
+                spawnGrand(0, window.innerHeight, 'HEART', 'white', 300);
+                spawnGrand(window.innerWidth, window.innerHeight, 'HEART', 'white', 300);
+            },
+            // 5. The Ruby Explosion
+            () => {
+                for(let i=0; i<10; i++) {
+                    spawnGrand(window.innerWidth/2, window.innerHeight/2, 'HEART', 'var(--ruby)', 300 + (i*50));
+                }
+            },
+            // 6. Golden Horizon
+            () => {
+                spawnGrand(-100, window.innerHeight/2, 'FLARE', 'gold', 800);
+                spawnGrand(window.innerWidth, window.innerHeight/2, 'FLARE', 'gold', 800);
+            },
+            // 7. Triple Heart Pulse
+            () => {
+                spawnGrand(0, window.innerHeight, 'HEART', 'pink', 700);
+                spawnGrand(window.innerWidth, 0, 'HEART', 'pink', 700);
+            },
+            // 8. Starlight Storm (Big Stars)
+            () => {
+                for(let i=0; i<4; i++) spawnGrand(Math.random()*window.innerWidth, 0, 'FLARE', 'white', 400);
+            },
+            // 9. Deep Crimson Wash
+            () => {
+                spawnGrand(0,0,'HEART','#4e0000', 1200);
+                spawnGrand(window.innerWidth, window.innerHeight, 'HEART', '#4e0000', 1200);
+            },
+            // 10. Rose Gold Rain
+            () => {
+                for(let i=0; i<5; i++) spawnGrand(i*(window.innerWidth/4), -200, 'FLARE', 'var(--rose-gold)', 400);
+            },
+            // 11. THE DHARSHINI SUPREME
+            () => {
+                fxLayer.style.background = "rgba(164, 22, 26, 0.2)";
+                setTimeout(() => fxLayer.style.background = "none", 500);
+                effects[0](); effects[1](); effects[3]();
+            }
+        ];
+
+        function triggerGrandEffect() {
+            effects[currentIdx]();
+            currentIdx = (currentIdx + 1) % effects.length;
+            
+            // Subtle frame reaction
+            const stage = document.getElementById('photo-stage');
+            stage.style.transform = "translateZ(50px) rotateY(10deg)";
+            setTimeout(() => stage.style.transform = "translateZ(0) rotateY(0)", 400);
+        }
+    </script>
+</body>
+</html>

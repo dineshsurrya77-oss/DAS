@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&family=Parisienne&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --love-pink: #ff4d6d;
+            --love-red: #c9184a;
+            --gold: #ffd700;
+            --dark-bg: #0a0505;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
+        body {
+            background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- GLOBAL CURSOR --- */
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            z-index: 100000; pointer-events: none;
+            filter: drop-shadow(0 0 10px var(--love-pink));
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-trail {
+            position: fixed; pointer-events: none; z-index: 99999;
+            font-size: 24px; animation: floatFade 1s forwards;
+        }
+
+        @keyframes floatFade {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-30px) scale(0.5); opacity: 0; }
+        }
+
+        /* --- BACKGROUND FX --- */
+        #bg-canvas { position: fixed; inset: 0; z-index: 0; }
+        .vignette { position: fixed; inset: 0; z-index: 1; background: radial-gradient(circle, transparent 50%, black 100%); pointer-events: none; }
+
+        /* --- PHASE 1: GATEWAY --- */
+        #gateway {
+            position: fixed; inset: 0; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .glass-card {
+            background: rgba(20, 10, 10, 0.85);
+            backdrop-filter: blur(25px);
+            padding: 40px 60px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 77, 109, 0.3);
+        }
+
+        .btn {
+            padding: 15px 40px; margin: 10px; border: none; border-radius: 50px;
+            font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .btn-primary { background: var(--love-pink); color: white; box-shadow: 0 0 20px var(--love-pink); }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--love-pink); }
+
+        /* --- PHASE 4: COLLAGE GRID (MAX 10% OVERLAP) --- */
+        #celebration-images {
+            position: fixed; inset: 0; z-index: 1500;
+            display: none; pointer-events: none;
+        }
+
+        .celeb-img {
+            position: absolute;
+            width: 200px; /* Predictable size for grid */
+            height: 270px;
+            border-radius: 12px;
+            border: 4px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            object-fit: cover; /* Keeps faces visible and properly centered */
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0) rotate(-10deg); opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- PHASE 5: CENTERED BOX --- */
+        #congrats-card {
+            position: relative; /* Works with body flex center */
+            opacity: 0; z-index: 9000; display: none;
+            transition: opacity 1s, transform 1s;
+            width: 90%; max-width: 500px;
+            background: rgba(5, 0, 0, 0.95);
+            backdrop-filter: blur(40px);
+            border: 1.5px solid var(--love-pink);
+        }
+
+        /* --- SLIDESHOW --- */
+        #slideshow-layer { position: fixed; inset: 0; z-index: 11000; background: black; display: none; }
+        .slide { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0; transition: opacity 1s; }
+        .slide.active { opacity: 1; }
+
+        #heart-overlay { position: fixed; top: 50%; left: 50%; width: 100px; height: 100px; background: var(--love-pink); transform: translate(-50%, -50%) scale(0); border-radius: 50%; z-index: 5000; pointer-events: none; }
+        #canvas-container { position: fixed; inset: 0; z-index: 500; pointer-events: none; }
+        .title-font { font-family: 'Dancing Script', cursive; color: var(--love-pink); }
+    </style>
+</head>
+
+<body>
+
+    <audio id="bgm-intro"><source src="https://github.com/DINESHSURRYA/junior/raw/main/Enna%20Solla%20Pogirai%20Bgm.mp3" type="audio/mpeg"></audio>
+    <audio id="bgm-celeb" loop><source src="https://github.com/DINESHSURRYA/junior/raw/main/Yen%20Moochavan%20Pechavan%20-%20Oorum%20Blood%20_%20Dude%20_%20Tamil.mp3" type="audio/mpeg"></audio>
+    <audio id="bgm-story" loop><source src="https://github.com/DINESHSURRYA/junior/raw/main/Aaha_Kalyanam.mp3" type="audio/mpeg"></audio>
+
+    <div id="custom-cursor">
+        <svg viewBox="0 0 32 32" style="width: 100%; height: 100%; fill: var(--love-pink);"><path d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" /></svg>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="vignette"></div>
+    <div id="canvas-container"></div>
+
+    <div id="gateway">
+        <div class="glass-card">
+            <h1 class="title-font" style="font-size: 3rem; margin-bottom: 20px;">Before we begin...</h1>
+            <p style="margin-bottom: 30px;">May I play something special for us?</p>
+            <button class="btn btn-primary" onclick="enterExperience(true)">Enable Music 🎶</button>
+        </div>
+    </div>
+
+    <div id="intro-layer" style="display:none; position:fixed; inset:0; z-index:9000; justify-content:center; align-items:center;">
+        <h1 id="intro-text" style="font-size:3rem; text-align:center; opacity:0; transition: opacity 1s;"></h1>
+    </div>
+
+    <div id="proposal-layer" style="display:none; position:fixed; inset:0; z-index:8000; flex-direction:column; justify-content:center; align-items:center;">
+        <h1 class="title-font" style="font-size: 4rem; text-align: center; margin-bottom: 40px; text-shadow: 0 0 30px var(--love-pink);">Will You Be My<br>Valentine?</h1>
+        <div style="display:flex; gap:30px;">
+            <button class="btn btn-primary" onclick="acceptProposal()">YES ❤️</button>
+            <button id="no-btn" class="btn" style="background:white; color:black; border-radius:50px; padding:15px 40px;">No 💔</button>
+        </div>
+    </div>
+
+    <div id="heart-overlay"></div>
+    <div id="celebration-images"></div>
+
+    <div id="congrats-card" class="glass-card">
+        <div style="font-size: 4rem; margin-bottom: 20px;">💖</div>
+        <h1 class="title-font" style="color: var(--gold); font-size: 2.5rem;">You just made my heart<br>the happiest ever!</h1>
+        <p style="margin: 20px 0; font-size: 1.2rem;">This is our forever.</p>
+        <button class="btn btn-primary" onclick="startSlideshow()">See Our Love Story? 💑</button>
+    </div>
+
+    <div id="slideshow-layer">
+        <div id="slide-container"></div>
+        <div style="position:absolute; bottom:30px; left:50%; transform:translateX(-50%); z-index:12000;">
+            <button class="btn btn-primary" onclick="location.reload()">Home 🏠</button>
+        </div>
+    </div>
+
+    <script>
+        let audioAllowed = false;
+        let scene, camera, renderer, ring, isCelebrating = false;
+        const tracks = { intro: document.getElementById('bgm-intro'), celeb: document.getElementById('bgm-celeb'), story: document.getElementById('bgm-story') };
+
+        const loverPhotos = [
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-08-02.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-13.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-19.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-25.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-33.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-40.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-50.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-51.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-12-55.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-13-03.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-13-06.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-14-50.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-14-57.jpg",
+            "https://github.com/DINESHSURRYA/junior/raw/main/backend/das/photo_2026-02-10_21-15-04.jpg"
+        ];
+
+        function init3D() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            const ringGeo = new THREE.TorusGeometry(1.2, 0.1, 30, 200);
+            ring = new THREE.Mesh(ringGeo, new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.1 }));
+            scene.add(ring);
+            scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (ring) ring.rotation.y += isCelebrating ? 0.05 : 0.01;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('mousemove', e => {
+            const cursor = document.getElementById('custom-cursor');
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            const noBtn = document.getElementById('no-btn');
+            const rect = noBtn.getBoundingClientRect();
+            const dist = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
+            if (dist < 100 && !isCelebrating) {
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+                noBtn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+            }
+        });
+
+        function enterExperience(music) {
+            audioAllowed = music;
+            document.getElementById('gateway').style.display = 'none';
+            if (music) tracks.intro.play();
+            init3D();
+            
+            const introLayer = document.getElementById('intro-layer');
+            const introText = document.getElementById('intro-text');
+            introLayer.style.display = 'flex';
+            
+            const lines = ["In a world of billions...", "There is only one...", "My heart beats for..."];
+            let i = 0;
+            const nextLine = () => {
+                if(i < lines.length) {
+                    introText.innerText = lines[i++];
+                    introText.style.opacity = 1;
+                    setTimeout(() => { introText.style.opacity = 0; setTimeout(nextLine, 1000); }, 3000);
+                } else {
+                    introLayer.style.display = 'none';
+                    document.getElementById('proposal-layer').style.display = 'flex';
+                }
+            };
+            nextLine();
+        }
+
+        function acceptProposal() {
+            isCelebrating = true;
+            document.getElementById('proposal-layer').style.display = 'none';
+            if (audioAllowed) { tracks.intro.pause(); tracks.celeb.play(); }
+            const overlay = document.getElementById('heart-overlay');
+            overlay.style.transition = "transform 2s ease-in";
+            overlay.style.transform = "translate(-50%, -50%) scale(100)";
+            setTimeout(() => { overlay.style.opacity = 0; triggerCelebration(); }, 2000);
+        }
+
+        function triggerCelebration() {
+            const container = document.getElementById('celebration-images');
+            container.style.display = 'block';
+
+            // GRID CALCULATIONS (4x4)
+            const cols = 4; const rows = 4;
+            const cellW = window.innerWidth / cols;
+            const cellH = window.innerHeight / rows;
+            const imgW = 200; const imgH = 270;
+
+            let photoIndex = 0;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    // Skip middle 2x2 cells to leave space for the center box
+                    if ((r === 1 || r === 2) && (c === 1 || c === 2)) continue;
+                    if (photoIndex >= loverPhotos.length) break;
+
+                    const img = document.createElement('img');
+                    img.src = loverPhotos[photoIndex++];
+                    img.className = 'celeb-img';
+
+                    // Center photo in its cell + small random nudge for 10% max overlap
+                    const baseX = c * cellW + (cellW / 2) - (imgW / 2);
+                    const baseY = r * cellH + (cellH / 2) - (imgH / 2);
+                    const nudgeX = (Math.random() - 0.5) * (cellW * 0.15);
+                    const nudgeY = (Math.random() - 0.5) * (cellH * 0.15);
+
+                    img.style.left = (baseX + nudgeX) + 'px';
+                    img.style.top = (baseY + nudgeY) + 'px';
+                    img.style.transform = `rotate(${(Math.random() - 0.5) * 15}deg)`;
+                    
+                    setTimeout(() => container.appendChild(img), photoIndex * 250);
+                }
+            }
+
+            setTimeout(() => {
+                const card = document.getElementById('congrats-card');
+                card.style.display = 'block';
+                setTimeout(() => card.style.opacity = 1, 100);
+            }, 4500);
+        }
+
+        function startSlideshow() {
+            document.getElementById('congrats-card').style.display = 'none';
+            document.getElementById('slideshow-layer').style.display = 'block';
+            if (audioAllowed) tracks.celeb.pause(); tracks.story.play();
+            const container = document.getElementById('slide-container');
+            let cur = 0;
+            const run = () => {
+                container.innerHTML = `<div class="slide active" style="background-image:url('${loverPhotos[cur]}')"></div>`;
+                cur = (cur + 1) % loverPhotos.length;
+                setTimeout(run, 4000);
+            };
+            run();
+        }
+
+        // Static particles for atmosphere
+        const bcv = document.getElementById('bg-canvas');
+        const bctx = bcv.getContext('2d');
+        bcv.width = window.innerWidth; bcv.height = window.innerHeight;
+        function dr() {
+            bctx.clearRect(0,0,bcv.width,bcv.height);
+            bctx.fillStyle = "rgba(255, 77, 109, 0.2)";
+            for(let i=0; i<40; i++) bctx.fillRect(Math.random()*bcv.width, Math.random()*bcv.height, 2, 2);
+            requestAnimationFrame(dr);
+        }
+        dr();
+    </script>
+</body>
+</html>

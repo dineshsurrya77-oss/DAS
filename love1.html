@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Valentine Experience ❤️</title>
+    <style>
+        :root {
+            --romance-pink: #ffafbd;
+            --romance-red: #ff3e6c;
+            --glass: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- PERSONALIZATION UI --- */
+        #settings-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            width: 280px;
+            transform: translateX(350px);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #settings-panel.open {
+            transform: translateX(0);
+        }
+
+        #settings-toggle {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-top: 10px;
+            outline: none;
+        }
+
+        .share-btn {
+            background: var(--romance-red);
+            color: white;
+            border: none;
+            padding: 8px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* --- MAIN UI --- */
+        .container {
+            text-align: center;
+            z-index: 10;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 4rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            animation: floatUI 5s ease-in-out infinite;
+            max-width: 90%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 5px 15px rgba(255, 62, 108, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 18px 45px;
+            font-size: 1.6rem;
+            border-radius: 50px;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: bold;
+        }
+
+        #yes-btn {
+            background: var(--romance-red);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 62, 108, 0.5);
+            z-index: 15;
+        }
+
+        #no-btn {
+            background: white;
+            color: #ff3e6c;
+            position: absolute;
+            z-index: 14;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- CURSOR --- */
+        #heart-pointer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            z-index: 999999;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 10px rgba(255, 62, 108, 0.5));
+            animation: heartBeat 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            15% {
+                transform: translate(-50%, -50%) scale(1.25);
+            }
+
+            30% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            45% {
+                transform: translate(-50%, -50%) scale(1.15);
+            }
+
+            60% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .heart-emoji {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999999;
+            font-size: 20px;
+            user-select: none;
+        }
+
+        /* --- OVERLAY --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 175, 189, 0.4);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+        }
+
+        .dialog {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 50px;
+            text-align: center;
+            border: 3px solid white;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dialog.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        @keyframes floatUI {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="music-gateway"
+        style="position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-family: sans-serif;">
+        <h1 style="margin-bottom: 20px;">Start Personalized Experience? ❤️</h1>
+        <div style="display: flex; gap: 20px;">
+            <button onclick="startExperience(true)"
+                style="padding: 15px 30px; font-size: 1.2rem; cursor: pointer; background: #ff3e6c; color: white; border: none; border-radius: 50px;">Play
+                with Music 🎵</button>
+
+        </div>
+    </div>
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="settings-panel">
+        <button id="settings-toggle" onclick="toggleSettings()">⚙️</button>
+        <p style="font-size: 0.8rem; color: #444;">Enter their name:</p>
+        <input type="text" id="nameInput" placeholder="Name..." oninput="updateName()">
+        <button class="share-btn" onclick="copyLink()">🔗 Copy Personalized Link</button>
+        <p id="copyStatus" style="font-size: 0.7rem; color: var(--romance-red); margin-top: 5px; display: none;">Link
+            copied to clipboard!</p>
+    </div>
+
+    <div class="container">
+        <h1 id="mainHeading">Will You Be My Valentine? ❤️</h1>
+        <div class="btn-group">
+            <button id="yes-btn" class="btn" onclick="celebrate()">💖 Yes</button>
+            <button id="no-btn" class="btn">💔 No</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="dialog" id="dialog">
+            <h2 id="congratsName" style="color: var(--romance-red); font-size: 2.5rem; margin-bottom: 10px;">Yayyy! 💖
+            </h2>
+            <p id="congratsMsg">You've made my heart the happiest ever!</p>
+            <button class="btn" onclick="location.reload()"
+                style="margin-top: 30px; background: #333; color: white; font-size: 1rem;">Close 🌹</button>
+        </div>
+    </div>
+
+    <div id="heart-pointer">
+        <svg viewBox="0 0 32 32" fill="var(--romance-red)">
+            <path
+                d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
+        </svg>
+    </div>
+
+    <audio id="intro-music">
+        <source src="https://github.com/DINESHSURRYA/junior/raw/main/Enna%20Solla%20Pogirai%20Bgm.mp3"
+            type="audio/mpeg">
+    </audio>
+    <audio id="celebration-music" loop>
+        <source
+            src="https://github.com/DINESHSURRYA/junior/raw/main/Yen%20Moochavan%20Pechavan%20-%20Oorum%20Blood%20_%20Dude%20_%20Tamil.mp3"
+            type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        const noBtn = document.getElementById('no-btn');
+        const mainHeading = document.getElementById('mainHeading');
+        const nameInput = document.getElementById('nameInput');
+        const music = document.getElementById('intro-music');
+        let musicAllowed = false;
+
+        function startExperience(allow) {
+            document.getElementById('music-gateway').style.display = 'none';
+            musicAllowed = allow;
+            if (allow) {
+                music.play().catch(e => console.log(e));
+                music.volume = 0.5;
+            }
+        }
+
+        // 1. URL Parameter Logic
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('n');
+            if (name) {
+                applyName(name);
+                nameInput.value = name;
+            }
+            initCanvas();
+        };
+
+        function updateName() {
+            applyName(nameInput.value);
+        }
+
+        function applyName(name) {
+            const cleanName = name.trim();
+            if (cleanName) {
+                mainHeading.innerText = `Will You Be My Valentine, ${cleanName}? ❤️`;
+                document.getElementById('congratsName').innerText = `Yayyy, ${cleanName}! 💖`;
+            } else {
+                mainHeading.innerText = "Will You Be My Valentine? ❤️";
+                document.getElementById('congratsName').innerText = "Yayyy! 💖";
+            }
+        }
+
+        function copyLink() {
+            const name = encodeURIComponent(nameInput.value.trim());
+            const url = `${window.location.origin}${window.location.pathname}?n=${name}`;
+            navigator.clipboard.writeText(url);
+            const status = document.getElementById('copyStatus');
+            status.style.display = 'block';
+            setTimeout(() => status.style.display = 'none', 2000);
+        }
+
+        function toggleSettings() {
+            document.getElementById('settings-panel').classList.toggle('open');
+        }
+
+        // 2. Cursor & Evasion
+        const heartPointer = document.getElementById('heart-pointer');
+        const emojis = ['❤️', '💖', '💝', '💗', '💓', '✨'];
+
+        window.addEventListener('mousemove', (e) => {
+            heartPointer.style.left = e.clientX + 'px';
+            heartPointer.style.top = e.clientY + 'px';
+
+            if (Math.random() > 0.8) createHeartTrail(e.clientX, e.clientY);
+
+            const rect = noBtn.getBoundingClientRect();
+            const dist = Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2));
+            if (dist < 150) {
+                noBtn.style.left = Math.random() * (window.innerWidth - 150) + 'px';
+                noBtn.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+                noBtn.innerText = ["Wait! 🥺", "Wrong Button! 💔", "Are you sure? 😭", "Please! ❤️"][Math.floor(Math.random() * 4)];
+            }
+        });
+
+        function createHeartTrail(x, y) {
+            const el = document.createElement('div');
+            el.className = 'heart-emoji';
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = x + 'px'; el.style.top = y + 'px';
+            document.body.appendChild(el);
+            const angle = Math.random() * Math.PI * 2;
+            const destX = x + Math.cos(angle) * 50;
+            const destY = y + Math.sin(angle) * 50 - 50;
+            el.animate([
+                { transform: `translate(0,0) scale(0)`, opacity: 1 },
+                { transform: `translate(${destX - x}px, ${destY - y}px) scale(1.5)`, opacity: 0 }
+            ], { duration: 1000, fill: 'forwards' }).onfinish = () => el.remove();
+        }
+
+        // 3. Background
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        class Heart {
+            constructor() { this.reset(); }
+            reset() { this.x = Math.random() * canvas.width; this.y = canvas.height + 20; this.size = Math.random() * 8 + 2; this.speed = Math.random() * 2 + 1; }
+            update() { this.y -= this.speed; if (this.y < -20) this.reset(); }
+            draw() { ctx.fillStyle = 'white'; ctx.globalAlpha = 0.3; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        const hearts = Array.from({ length: 50 }, () => new Heart());
+        function anim() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach(h => { h.update(); h.draw(); });
+            requestAnimationFrame(anim);
+        }
+        anim();
+
+        // 4. Final Celebration
+        function celebrate() {
+            if (musicAllowed) {
+                document.getElementById('intro-music').pause();
+                const celebMusic = document.getElementById('celebration-music');
+                celebMusic.volume = 0.5;
+                celebMusic.play();
+            }
+            document.getElementById('overlay').style.display = 'flex';
+            setTimeout(() => document.getElementById('dialog').classList.add('active'), 50);
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.className = 'trail-emoji';
+                    h.innerText = '💖';
+                    h.style.left = Math.random() * 100 + 'vw';
+                    h.style.top = '110vh';
+                    document.body.appendChild(h);
+                    h.animate([{ transform: 'translateY(0)' }, { transform: `translate(${(Math.random() - 0.5) * 400}px, -120vh)` }], { duration: 3000 }).onfinish = () => h.remove();
+                }, i * 30);
+            }
+        }
+    </script>
+</body>
+
+</html>
