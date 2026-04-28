@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎂 Happy Birthday, Dharshini! 💖</title>
+  <meta name="description" content="A special birthday tribute - a digital scrapbook filled with love, memories, and surprises.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Floating Stickers Layer -->
+  <div id="sticker-layer"></div>
+  <!-- Confetti Background -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- ========== PAGE 1: PIN LOGIN ========== -->
+  <div id="page-login" class="page active">
+    <div class="login-card">
+      <div style="font-size:3rem;margin-bottom:10px;">🎂</div>
+      <h1>Happy Birthday!</h1>
+      <p class="subtitle">Enter the secret PIN to unlock your surprise 🎁</p>
+
+      <div class="pin-display">
+        <div class="pin-dot" id="dot-0"></div>
+        <div class="pin-dot" id="dot-1"></div>
+        <div class="pin-dot" id="dot-2"></div>
+        <div class="pin-dot" id="dot-3"></div>
+      </div>
+
+      <div class="pin-pad">
+        <button class="pin-btn" data-num="1" onclick="pressPin('1')">1</button>
+        <button class="pin-btn" data-num="2" onclick="pressPin('2')">2</button>
+        <button class="pin-btn" data-num="3" onclick="pressPin('3')">3</button>
+        <button class="pin-btn" data-num="4" onclick="pressPin('4')">4</button>
+        <button class="pin-btn" data-num="5" onclick="pressPin('5')">5</button>
+        <button class="pin-btn" data-num="6" onclick="pressPin('6')">6</button>
+        <button class="pin-btn" data-num="7" onclick="pressPin('7')">7</button>
+        <button class="pin-btn" data-num="8" onclick="pressPin('8')">8</button>
+        <button class="pin-btn" data-num="9" onclick="pressPin('9')">9</button>
+        <button class="pin-btn action" onclick="clearPin()">CLR</button>
+        <button class="pin-btn" data-num="0" onclick="pressPin('0')">0</button>
+        <button class="pin-btn action" onclick="deletePin()">⌫</button>
+      </div>
+
+      <div id="pin-error" class="login-error"></div>
+      <div class="hint-box">🔑 <span>Hint:</span> It's our anniversary date (DDMM)</div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 2: GIFT MENU ========== -->
+  <div id="page-gifts" class="page">
+    <div style="font-size:4rem;margin-bottom:5px;">🎉</div>
+    <h1 class="gifts-title">Gifts for You!</h1>
+    <p class="gifts-subtitle">Pick a gift to unwrap, birthday girl~ 🎀</p>
+
+    <div class="gift-cards">
+      <!-- Letter Card -->
+      <div class="gift-card" onclick="navigateTo('page-letter')">
+        <span class="icon">💌</span>
+        <h3>Love Letter</h3>
+        <p>Words from my heart</p>
+      </div>
+      <!-- Gallery Card -->
+      <div class="gift-card" onclick="navigateTo('page-gallery')">
+        <span class="icon">📸</span>
+        <h3>Photo Gallery</h3>
+        <p>Our best moments</p>
+      </div>
+      <!-- Music Card -->
+      <div class="gift-card" onclick="navigateTo('page-music')">
+        <span class="icon">🎵</span>
+        <h3>Our Playlist</h3>
+        <p>Songs that remind me of you</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 3: LOVE LETTER ========== -->
+  <div id="page-letter" class="page">
+    <div class="letter-container">
+      <div class="tape"></div>
+      <p class="letter-date">May 1, 2026</p>
+      <h2>✨ The Girl Who Proved Soulmates Are Real ✨</h2>
+      <div class="letter-body">
+        <p>My dearest Dharshini,</p>
+        <p>Happy Birthday, my love! 🎂 Today the world got a little brighter because you exist in it. Every day with you feels like unwrapping a gift I never knew I deserved.</p>
+        <p>You are the melody in my favorite song, the warmth in my coldest days, and the reason I believe in magic. From the moment you walked into my life, everything changed — colors got brighter, laughter got louder, and love got deeper.</p>
+        <p>You're not just my girlfriend — you're my best friend, my confidante, my biggest cheerleader, and the most beautiful soul I've ever known. I love the way your eyes light up when you're happy, the way you care for everyone around you, and the way you make ordinary moments feel extraordinary.</p>
+        <p>On your special day, I want you to know: I am so incredibly grateful for you. For your patience, your kindness, your silly jokes, and your endless love. You deserve all the stars in the sky, and I'll spend forever trying to give them to you. 🌟</p>
+        <p>Here's to another year of adventures, late-night talks, stolen glances, and a love that only grows stronger. I love you more than words could ever say — today, tomorrow, and always. 💕</p>
+      </div>
+      <div class="letter-signature">
+        With all my love,<br>
+        Forever Yours ❤️<br>
+        — DS
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn secondary" onclick="navigateTo('page-gifts')">← Back to Gifts</button>
+      <button class="nav-btn primary" onclick="navigateTo('page-gallery')">Next: Gallery →</button>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 4: PHOTO GALLERY ========== -->
+  <div id="page-gallery" class="page">
+    <h1 class="gallery-title">📸 Our Memories</h1>
+
+    <div class="polaroid-slider">
+      <button class="slider-btn" onclick="prevPhoto()">‹</button>
+      <div class="polaroid-frame">
+        <img id="gallery-img" src="" alt="Our Photo" style="transition: opacity 0.3s;">
+        <p class="polaroid-caption" id="gallery-caption"></p>
+      </div>
+      <button class="slider-btn" onclick="nextPhoto()">›</button>
+    </div>
+    <p class="photo-counter" id="photo-counter"></p>
+
+    <div class="nav-row">
+      <button class="nav-btn secondary" onclick="navigateTo('page-gifts')">← Back to Gifts</button>
+      <button class="nav-btn primary" onclick="navigateTo('page-music')">Next: Music →</button>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 5: MUSIC ========== -->
+  <div id="page-music" class="page">
+    <h1 class="music-title">🎵 Our Song</h1>
+
+    <div class="vinyl-container" onclick="toggleVinyl()">
+      <div class="vinyl-record"></div>
+    </div>
+
+    <div class="song-card">
+      <p class="song-label">★ Recommended Song ★</p>
+      <p class="song-name">Perfect</p>
+      <p class="song-artist">Ed Sheeran</p>
+      <a class="spotify-btn" href="https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v" target="_blank" rel="noopener">
+        🎧 Save on Spotify
+      </a>
+    </div>
+
+    <div class="nav-row" style="margin-top:30px;">
+      <button class="nav-btn secondary" onclick="navigateTo('page-gifts')">← Back to Gifts</button>
+      <button class="nav-btn primary" onclick="navigateTo('page-login')">🔒 Lock</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

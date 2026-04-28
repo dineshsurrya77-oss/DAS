@@ -1,0 +1,457 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Patrick+Hand&family=Caveat:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+
+:root {
+  --red: #E63946;
+  --dark-red: #c1121f;
+  --blue: #457B9D;
+  --light-blue: #A8DADC;
+  --cream: #F1FAEE;
+  --white: #ffffff;
+  --dark: #1D3557;
+  --pink: #FFB4C2;
+  --yellow: #FFD166;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--red);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* === PAGES === */
+.page {
+  display: none;
+  min-height: 100vh;
+  position: relative;
+  animation: fadeSlideIn 0.6s ease-out forwards;
+}
+.page.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === FLOATING STICKERS === */
+.sticker {
+  position: fixed;
+  font-size: 2rem;
+  z-index: 0;
+  pointer-events: none;
+  animation: floatSticker 6s ease-in-out infinite;
+  opacity: 0.7;
+}
+@keyframes floatSticker {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-20px) rotate(5deg); }
+  50% { transform: translateY(-10px) rotate(-3deg); }
+  75% { transform: translateY(-25px) rotate(4deg); }
+}
+
+/* === CONFETTI CANVAS === */
+#confetti-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* === PAGE 1: PIN LOGIN === */
+#page-login {
+  background: linear-gradient(135deg, var(--dark) 0%, #0d1b2a 100%);
+  position: relative;
+}
+.login-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 30px;
+  padding: 40px 50px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  z-index: 2;
+  max-width: 400px;
+  width: 90%;
+}
+.login-card h1 {
+  font-family: 'Dancing Script', cursive;
+  color: var(--pink);
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+.login-card .subtitle {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+}
+.pin-display {
+  display: flex; gap: 12px; justify-content: center; margin-bottom: 25px;
+}
+.pin-dot {
+  width: 50px; height: 55px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: white;
+  font-family: 'Inter', sans-serif; font-weight: 800;
+  transition: all 0.2s;
+}
+.pin-dot.filled {
+  border-color: var(--pink);
+  background: rgba(255,180,194,0.15);
+  box-shadow: 0 0 15px rgba(255,180,194,0.3);
+  animation: popIn 0.2s ease-out;
+}
+@keyframes popIn {
+  0% { transform: scale(0.5); } 50% { transform: scale(1.2); } 100% { transform: scale(1); }
+}
+.pin-pad {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; max-width: 260px; margin: 0 auto 20px;
+}
+.pin-btn {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: white; font-size: 1.5rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.pin-btn:hover { background: rgba(255,180,194,0.2); border-color: var(--pink); transform: scale(1.1); }
+.pin-btn:active { transform: scale(0.95); }
+.pin-btn.action { font-size: 1rem; font-weight: 600; }
+.hint-box {
+  background: rgba(255,255,255,0.06);
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 10px 16px;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+.hint-box span { color: var(--yellow); }
+.login-error {
+  color: #ff6b6b; font-size: 0.85rem;
+  margin-top: 10px; min-height: 20px;
+  animation: shake 0.4s ease-in-out;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* === PAGE 2: GIFT MENU === */
+#page-gifts {
+  background: var(--red);
+  padding: 40px 20px;
+}
+.gifts-title {
+  font-family: 'Pacifico', cursive;
+  color: var(--white);
+  font-size: 3rem;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+  margin-bottom: 10px;
+  z-index: 2;
+}
+.gifts-subtitle {
+  color: rgba(255,255,255,0.85);
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.3rem;
+  margin-bottom: 40px;
+  z-index: 2;
+}
+.gift-cards {
+  display: flex; gap: 30px; flex-wrap: wrap;
+  justify-content: center; z-index: 2;
+}
+.gift-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 35px 30px;
+  width: 220px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+  border: 3px solid transparent;
+}
+.gift-card::before {
+  content: '';
+  position: absolute; top: -2px; right: -2px;
+  width: 40px; height: 40px;
+  background: var(--yellow);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+.gift-card:hover {
+  transform: translateY(-12px) rotate(-2deg) scale(1.05);
+  box-shadow: 10px 14px 0 rgba(0,0,0,0.2);
+  border-color: var(--blue);
+}
+.gift-card .icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  display: block;
+  animation: wiggle 2s ease-in-out infinite;
+}
+.gift-card:nth-child(2) .icon { animation-delay: 0.3s; }
+.gift-card:nth-child(3) .icon { animation-delay: 0.6s; }
+@keyframes wiggle {
+  0%,100% { transform: rotate(0); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+.gift-card h3 {
+  font-family: 'Caveat', cursive;
+  color: var(--dark);
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+.gift-card p {
+  color: #666; font-size: 0.85rem;
+}
+
+/* === PAGE 3: LOVE LETTER === */
+#page-letter {
+  background: #f5e6c8;
+  background-image:
+    repeating-linear-gradient(transparent, transparent 31px, #ccc 31px, #ccc 32px);
+  padding: 50px 20px;
+}
+.letter-container {
+  max-width: 650px;
+  width: 95%;
+  background: #fffef9;
+  border-radius: 4px;
+  padding: 50px 45px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.1), 0 0 40px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 2;
+  border-left: 3px solid #E8928A;
+}
+.letter-container::before {
+  content: '📌';
+  position: absolute; top: -15px; right: 30px;
+  font-size: 2rem;
+}
+.letter-date {
+  text-align: right;
+  color: #888;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+.letter-container h2 {
+  font-family: 'Dancing Script', cursive;
+  color: var(--red);
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  text-align: center;
+  line-height: 1.3;
+}
+.letter-body {
+  font-family: 'Caveat', cursive;
+  color: #333;
+  font-size: 1.35rem;
+  line-height: 2;
+  margin-bottom: 30px;
+}
+.letter-body p { margin-bottom: 16px; text-indent: 30px; }
+.letter-signature {
+  text-align: right;
+  font-family: 'Dancing Script', cursive;
+  color: var(--dark-red);
+  font-size: 1.8rem;
+}
+.tape {
+  position: absolute;
+  width: 80px; height: 25px;
+  background: rgba(255,209,102,0.6);
+  transform: rotate(-5deg);
+  top: 8px; left: 20px;
+  border-radius: 2px;
+}
+
+/* === PAGE 4: GALLERY === */
+#page-gallery {
+  background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 100%);
+  padding: 50px 20px;
+  min-height: 100vh;
+}
+.gallery-title {
+  font-family: 'Pacifico', cursive;
+  color: var(--white);
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  z-index: 2;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+.polaroid-slider {
+  display: flex; align-items: center; gap: 20px;
+  z-index: 2; width: 100%; max-width: 600px; justify-content: center;
+}
+.polaroid-frame {
+  background: var(--white);
+  padding: 15px 15px 50px;
+  border-radius: 4px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  transform: rotate(-2deg);
+  transition: transform 0.4s;
+  max-width: 380px; width: 100%;
+}
+.polaroid-frame:hover { transform: rotate(0deg) scale(1.02); }
+.polaroid-frame img {
+  width: 100%; height: 320px;
+  object-fit: cover; border-radius: 2px;
+  background: #eee;
+}
+.polaroid-caption {
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  color: #333; font-size: 1.3rem;
+  margin-top: 12px;
+}
+.slider-btn {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
+  color: white; font-size: 1.5rem;
+  cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0;
+}
+.slider-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
+.photo-counter {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  margin-top: 20px;
+  z-index: 2;
+}
+
+/* === PAGE 5: MUSIC === */
+#page-music {
+  background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 50%, #2d1b38 100%);
+  padding: 50px 20px;
+}
+.music-title {
+  font-family: 'Pacifico', cursive;
+  color: var(--white);
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  z-index: 2;
+}
+.vinyl-container {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 30px;
+}
+.vinyl-record {
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    #111 20%, #222 21%, #222 28%,
+    #111 29%, #333 30%, #333 40%,
+    #111 41%, #222 42%, #222 48%,
+    #111 49%, #333 50%, #1a1a1a 100%
+  );
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  animation: spin 4s linear infinite;
+  position: relative;
+}
+.vinyl-record::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--dark-red));
+  border: 3px solid #333;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.vinyl-record.paused { animation-play-state: paused; }
+
+.song-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 25px 30px;
+  max-width: 380px; width: 90%;
+  z-index: 2;
+  text-align: center;
+}
+.song-card .song-label {
+  color: var(--yellow);
+  font-family: 'Patrick Hand', cursive;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.song-card .song-name {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem; font-weight: 700;
+  margin-bottom: 5px;
+}
+.song-card .song-artist {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+.spotify-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px;
+  background: #1DB954;
+  color: white; font-weight: 700;
+  border: none; border-radius: 50px;
+  font-size: 0.95rem;
+  cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
+}
+.spotify-btn:hover { background: #1ed760; transform: scale(1.05); box-shadow: 0 5px 20px rgba(29,185,84,0.4); }
+
+/* === NAV BUTTONS === */
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 32px;
+  border: none; border-radius: 50px;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.25s;
+  margin-top: 30px;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-btn.primary {
+  background: var(--white);
+  color: var(--red);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+}
+.nav-btn.primary:hover { transform: translateY(-3px); box-shadow: 6px 8px 0 rgba(0,0,0,0.2); }
+.nav-btn.secondary {
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.nav-btn.secondary:hover { border-color: white; color: white; }
+.nav-row { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+
+/* === RESPONSIVE === */
+@media (max-width: 700px) {
+  .gift-cards { flex-direction: column; align-items: center; }
+  .gift-card { width: 80%; max-width: 260px; }
+  .gifts-title { font-size: 2.2rem; }
+  .letter-container { padding: 30px 25px; }
+  .letter-container h2 { font-size: 1.7rem; }
+  .polaroid-frame img { height: 240px; }
+  .login-card { padding: 30px 25px; }
+  .pin-btn { width: 60px; height: 60px; font-size: 1.3rem; }
+  .pin-dot { width: 42px; height: 48px; font-size: 1.5rem; }
+}
