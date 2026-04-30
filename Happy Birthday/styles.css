@@ -278,9 +278,21 @@ body {
 
 /* === PAGE 4: GALLERY === */
 #page-gallery {
-  background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 100%);
+  background: #111; /* Dark base */
   padding: 50px 20px;
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+#gallery-bg {
+  position: absolute;
+  top: -10%; left: -10%; width: 120%; height: 120%;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px) brightness(0.6);
+  transition: background-image 1s ease-in-out;
+  opacity: 0.85;
 }
 .gallery-title {
   font-family: 'Pacifico', cursive;
@@ -295,13 +307,15 @@ body {
   z-index: 2; width: 100%; max-width: 600px; justify-content: center;
 }
 .polaroid-frame {
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
   padding: 20px 20px 60px;
   border-radius: 4px;
-  box-shadow: 0 12px 50px rgba(0,0,0,0.5);
+  box-shadow: 0 15px 60px rgba(0,0,0,0.6);
   transform: rotate(-2deg);
-  transition: transform 0.4s;
+  transition: transform 0.4s, background 0.3s;
   max-width: 550px; width: 95%;
+  border: 1px solid rgba(255,255,255,0.3);
 }
 .polaroid-frame:hover { transform: rotate(0deg) scale(1.02); }
 .polaroid-frame img {
@@ -455,4 +469,16 @@ body {
   .login-card { padding: 30px 25px; }
   .pin-btn { width: 60px; height: 60px; font-size: 1.3rem; }
   .pin-dot { width: 42px; height: 48px; font-size: 1.5rem; }
+
+.polaroid-slider {
+  display: flex; align-items: center; gap: 15px;
+  z-index: 2; width: 100%; max-width: 900px; justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gallery-nav-left, .gallery-nav-right {
+  margin: 10px;
+  flex-shrink: 0;
+}
+
 }

@@ -9,6 +9,7 @@
 </head>
 <body>
 
+  <audio id="gallery-audio" src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/last_7_minutes.mp3" loop></audio>
   <!-- Floating Stickers Layer -->
   <div id="sticker-layer"></div>
   <!-- Confetti Background -->
@@ -44,7 +45,9 @@
       </div>
 
       <div id="pin-error" class="login-error"></div>
-      <div class="hint-box">🔑 <span>Hint:</span> It's our anniversary date (DDMM)</div>
+      <div class="hint-box">
+        🔑 <span>Hint:</span> It's her birthday (DMYY)
+      </div>
     </div>
   </div>
 
@@ -108,22 +111,20 @@
 
   <!-- ========== PAGE 4: PHOTO GALLERY ========== -->
   <div id="page-gallery" class="page">
+    <div id="gallery-bg"></div>
     <h1 class="gallery-title">📸 Our Memories</h1>
 
     <div class="polaroid-slider">
+      <button class="nav-btn secondary gallery-nav-left" onclick="navigateTo('page-gifts')">← Back</button>
       <button class="slider-btn" onclick="prevPhoto()">‹</button>
       <div class="polaroid-frame">
         <img id="gallery-img" src="" alt="Our Photo" style="transition: opacity 0.3s;">
         <p class="polaroid-caption" id="gallery-caption"></p>
       </div>
       <button class="slider-btn" onclick="nextPhotoManual()">›</button>
+      <button class="nav-btn primary gallery-nav-right" onclick="navigateTo('page-music')">Music →</button>
     </div>
     <p class="photo-counter" id="photo-counter"></p>
-
-    <div class="nav-row">
-      <button class="nav-btn secondary" onclick="navigateTo('page-gifts')">← Back to Gifts</button>
-      <button class="nav-btn primary" onclick="navigateTo('page-music')">Next: Music →</button>
-    </div>
   </div>
 
   <!-- ========== PAGE 5: MUSIC ========== -->

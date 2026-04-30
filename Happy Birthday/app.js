@@ -204,12 +204,14 @@ function setupGallery() {
 
 function updatePhoto() {
   const img = document.getElementById('gallery-img');
+  const bg = document.getElementById('gallery-bg');
   const caption = document.getElementById('gallery-caption');
   const counter = document.getElementById('photo-counter');
 
   img.style.opacity = '0';
   setTimeout(() => {
     img.src = photos[currentPhoto].src;
+    bg.style.backgroundImage = `url('${photos[currentPhoto].src}')`;
     caption.textContent = photos[currentPhoto].caption;
     counter.textContent = `${currentPhoto + 1} / ${photos.length}`;
     img.style.opacity = '1';
@@ -220,10 +222,20 @@ let galleryInterval;
 
 // === NAVIGATION ===
 function navigateTo(pageId) {
+  const galleryAudio = document.getElementById('gallery-audio');
+
   // Clear any existing intervals when navigating
   if (galleryInterval) {
     clearInterval(galleryInterval);
     galleryInterval = null;
+  }
+
+  // Handle Gallery Music
+  if (pageId === 'page-gallery') {
+    galleryAudio.play().catch(e => console.log("Playback failed:", e));
+  } else {
+    galleryAudio.pause();
+    galleryAudio.currentTime = 0; // Reset to start
   }
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
