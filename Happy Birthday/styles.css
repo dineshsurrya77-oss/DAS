@@ -303,24 +303,25 @@ body {
   text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
 }
 .polaroid-slider {
-  display: flex; align-items: center; gap: 20px;
-  z-index: 2; width: 100%; max-width: 600px; justify-content: center;
+  display: flex; align-items: center; gap: 60px;
+  z-index: 2; width: 100%; max-width: 1200px; justify-content: center;
+  flex-wrap: wrap;
 }
 .polaroid-frame {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
-  padding: 20px 20px 60px;
+  padding: 25px 25px 70px;
   border-radius: 4px;
-  box-shadow: 0 15px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.7);
   transform: rotate(-2deg);
   transition: transform 0.4s, background 0.3s;
-  max-width: 550px; width: 95%;
+  max-width: 750px; width: 95%;
   border: 1px solid rgba(255,255,255,0.3);
 }
-.polaroid-frame:hover { transform: rotate(0deg) scale(1.02); }
+.polaroid-frame:hover { transform: rotate(0deg) scale(1.01); }
 .polaroid-frame img {
   width: 100%; height: auto;
-  max-height: 500px;
+  max-height: 650px;
   object-fit: contain; border-radius: 2px;
   background: #fdfdfd;
 }
@@ -465,20 +466,9 @@ body {
   .gifts-title { font-size: 2.2rem; }
   .letter-container { padding: 30px 25px; }
   .letter-container h2 { font-size: 1.7rem; }
-  .polaroid-frame img { height: 240px; }
+  .polaroid-frame img { height: auto; max-height: 400px; }
+  .polaroid-slider { gap: 20px; }
   .login-card { padding: 30px 25px; }
   .pin-btn { width: 60px; height: 60px; font-size: 1.3rem; }
   .pin-dot { width: 42px; height: 48px; font-size: 1.5rem; }
-
-.polaroid-slider {
-  display: flex; align-items: center; gap: 15px;
-  z-index: 2; width: 100%; max-width: 900px; justify-content: center;
-  flex-wrap: wrap;
-}
-
-.gallery-nav-left, .gallery-nav-right {
-  margin: 10px;
-  flex-shrink: 0;
-}
-
 }
