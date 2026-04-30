@@ -89,8 +89,8 @@
         .message-bubbly {
             font-family: 'Bubblegum Sans', cursive;
             font-size: 4rem;
-            color: var(--cherry-red);
-            text-shadow: 3px 3px 0px white;
+            color: #d63384; /* Darker, more vibrant pink/red */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 20px white;
             margin: 20px 0;
             animation: bounce 2s infinite;
         }
@@ -118,6 +118,7 @@
             transition: filter 0.3s, transform 0.2s;
             filter: drop-shadow(0 5px 15px rgba(255, 77, 109, 0.4));
             text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Added shadow for readability */
         }
 
         .bow-btn:hover {
@@ -171,8 +172,8 @@
 
         .photo-booth {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-wrap: nowrap; /* Disabled wrapping for scrolling */
+            justify-content: flex-start;
             gap: 30px;
             padding: 40px;
             background: rgba(255, 255, 255, 0.2);
@@ -180,6 +181,22 @@
             border: 6px solid var(--y2k-pink);
             border-radius: 30px;
             box-shadow: 0 0 30px var(--y2k-pink), inset 0 0 20px var(--y2k-pink);
+            overflow-x: auto; /* Enabled horizontal scroll */
+            width: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--y2k-pink) transparent;
+        }
+
+        .photo-booth::-webkit-scrollbar {
+            height: 8px;
+        }
+        .photo-booth::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .photo-booth::-webkit-scrollbar-thumb {
+            background: var(--y2k-pink);
+            border-radius: 10px;
         }
 
         .polaroid {
@@ -428,19 +445,16 @@
             <h2 class="neon-text">Sweetest Memories</h2>
             <div class="photo-booth">
                 <div class="polaroid" style="--rot: -5deg">
-                    <img src="https://picsum.photos/400/400?random=11" alt="Memory 1">
-                    <img src="assets/stickers.png" class="sticker-img" style="top: -20px; left: -20px; transform: rotate(-10deg);">
+                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/9.jpg" alt="Memory 1">
                 </div>
                 <div class="polaroid" style="--rot: 3deg">
-                    <img src="https://picsum.photos/400/400?random=12" alt="Memory 2">
-                    <img src="assets/stickers.png" class="sticker-img" style="bottom: -20px; right: -20px; transform: rotate(15deg);">
+                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/10.jpg" alt="Memory 2">
                 </div>
                 <div class="polaroid" style="--rot: -2deg">
-                    <img src="https://picsum.photos/400/400?random=13" alt="Memory 3">
-                    <img src="assets/stickers.png" class="sticker-img" style="top: 30%; right: -30px; transform: scale(0.8) rotate(90deg);">
+                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/11.jpg" alt="Memory 3">
                 </div>
                 <div class="polaroid" style="--rot: 6deg">
-                    <img src="https://picsum.photos/400/400?random=14" alt="Memory 4">
+                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/Kovil/1.jpg" alt="Memory 4">
                 </div>
             </div>
             <button class="phone-btn" onclick="nextPage(3)" title="Go to Final Page"></button>

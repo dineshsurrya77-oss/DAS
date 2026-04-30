@@ -5,16 +5,16 @@ let currentPhoto = 0;
 
 // Photo data with raw GitHub URLs
 const photos = [
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-08-02.jpg', caption: 'Happy Birthday, My Love 💖' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-13.jpg', caption: 'Best Moment! ✨' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-19.jpg', caption: 'Us Against the World 🌍' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-25.jpg', caption: 'Forever & Always 💕' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-33.jpg', caption: 'My Favorite Person 🥰' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-40.jpg', caption: 'Adventure Buddies 🗺️' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-50.jpg', caption: 'Pure Happiness 😊' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-12-55.jpg', caption: 'My Sunshine ☀️' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-13-03.jpg', caption: 'Memories We Made 📸' },
-  { src: 'https://raw.githubusercontent.com/DINESHSURRYA/junior/main/backend/das/photo_2026-02-10_21-13-06.jpg', caption: 'You & Me 💗' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/1.jpg', caption: 'Happy Birthday, My Love 💖' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/2.jpg', caption: 'Your beautiful smile! ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/3.jpg', caption: 'Us Against the World 🌍' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/4.jpg', caption: 'Forever & Always 💕' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/5.jpg', caption: 'My Favorite Person 🥰' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/6.jpg', caption: 'Adventure Buddies 🗺️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/7.jpg', caption: 'Pure Happiness 😊' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/8.jpg', caption: 'My Sunshine ☀️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/KG_CINEMAS%20OUTING/1.jpg', caption: 'Movie Date! 🍿' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/Kovil/1.jpg', caption: 'Peaceful Moments ✨' },
 ];
 
 // === STICKER DATA ===
