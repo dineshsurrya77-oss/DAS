@@ -1,104 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Destiny | A Cinematic Journey</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --blush: #ffafbd;
             --rose: #ff3e6c;
             --gold: #d4af37;
             --glass: rgba(255, 255, 255, 0.15);
-            --vignette: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 100%);
+            --vignette: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important;
+        }
 
-        body, html { 
-            height: 100vh; width: 100vw; 
-            overflow: hidden; background: #050505;
-            font-family: 'Montserrat', sans-serif; color: white;
+        body,
+        html {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #050505;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
         }
 
         /* --- BACKGROUND LAYERS --- */
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
-        .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--vignette); z-index: 5; pointer-events: none; }
-        
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--vignette);
+            z-index: 5;
+            pointer-events: none;
+        }
+
         /* --- CURSOR SYSTEM --- */
-        #cursor-wrap { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+        #cursor-wrap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
         #heart-cursor {
-            width: 30px; height: 30px; fill: var(--rose);
+            width: 30px;
+            height: 30px;
+            fill: var(--rose);
             transform: translate(-50%, -50%);
             animation: pump 0.8s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
             filter: drop-shadow(0 0 10px var(--rose));
         }
+
         @keyframes pump {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            15% { transform: translate(-50%, -50%) scale(1.3); }
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            15% {
+                transform: translate(-50%, -50%) scale(1.3);
+            }
         }
-        .trail-emoji { position: fixed; pointer-events: none; font-size: 24px; z-index: 9999; pointer-events: none; }
+
+        .trail-emoji {
+            position: fixed;
+            pointer-events: none;
+            font-size: 24px;
+            z-index: 9999;
+            pointer-events: none;
+        }
 
         /* --- PHASE WRAPPERS --- */
         .phase {
-            position: absolute; width: 100%; height: 100%;
-            display: none; flex-direction: column; justify-content: center;
-            align-items: center; z-index: 10; text-align: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            text-align: center;
             padding: 20px;
         }
-        .active { display: flex; animation: fadeIn 2s forwards; }
 
-        @keyframes fadeIn { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
+        .active {
+            display: flex;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                filter: blur(10px);
+            }
+
+            to {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
 
         /* --- BUTTONS --- */
         .btn {
-            padding: 15px 40px; font-size: 1.2rem; border-radius: 50px;
-            border: none; cursor: pointer; transition: 0.4s; font-family: 'Cinzel', serif;
-            letter-spacing: 2px; text-transform: uppercase; margin: 15px;
-            background: var(--glass); color: white; border: 1px solid rgba(255,255,255,0.3);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: 0.4s;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 15px;
+            background: var(--glass);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(5px);
         }
-        .btn:hover { background: white; color: var(--rose); transform: scale(1.1); }
-        .btn-primary { background: var(--rose); border: none; box-shadow: 0 0 20px rgba(255, 62, 108, 0.5); }
+
+        .btn:hover {
+            background: white;
+            color: var(--rose);
+            transform: scale(1.1);
+        }
+
+        .btn-primary {
+            background: var(--rose);
+            border: none;
+            box-shadow: 0 0 20px rgba(255, 62, 108, 0.5);
+        }
 
         /* --- RING SCENE --- */
-        #ring-ui { 
-            width: 400px; height: 400px; position: relative; 
-            display: flex; justify-content: center; align-items: center;
+        #ring-ui {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        #ring-content { position: absolute; width: 220px; z-index: 20; }
+
+        #ring-content {
+            position: absolute;
+            width: 220px;
+            z-index: 20;
+        }
 
         /* --- NO BUTTON LOGIC --- */
-        #no-btn { position: absolute; transition: 0.2s ease-out; }
+        #no-btn {
+            position: absolute;
+            transition: 0.2s ease-out;
+        }
 
         /* --- GLASS CARD --- */
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(25px);
-            padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            padding: 50px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
         }
 
         /* --- CINEMATIC TEXT --- */
-        .cine-text { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: white; opacity: 0; }
-        .show-text { animation: textAnim 4s forwards; }
-        @keyframes textAnim { 0% { opacity: 0; transform: translateY(20px); } 20%, 80% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px); } }
+        .cine-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: white;
+            opacity: 0;
+        }
+
+        .show-text {
+            animation: textAnim 4s forwards;
+        }
+
+        @keyframes textAnim {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            20%,
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
 
         /* --- SLIDESHOW --- */
         #slideshow-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 50; display: none; background: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            display: none;
+            background: black;
         }
-        .slide {
-            position: absolute; width: 100%; height: 100%;
-            background-size: cover; background-position: center;
-            opacity: 0; transition: 1s; transform: scale(1.1);
-        }
-        .slide.active-slide { opacity: 1; transform: scale(1); }
 
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: 1s;
+            transform: scale(1.1);
+        }
+
+        .slide.active-slide {
+            opacity: 1;
+            transform: scale(1);
+        }
     </style>
 </head>
+
 <body>
 
     <div class="vignette"></div>
@@ -106,7 +254,8 @@
 
     <div id="cursor-wrap">
         <svg id="heart-cursor" viewBox="0 0 32 32">
-            <path d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z"/>
+            <path
+                d="M16 28.5L14.1 26.8C7.4 20.7 3 16.7 3 11.8C3 7.8 6.1 4.7 10.1 4.7C12.4 4.7 14.5 5.7 16 7.4C17.5 5.7 19.6 4.7 21.9 4.7C25.9 4.7 29 7.8 29 11.8C29 16.7 24.6 20.7 17.9 26.8L16 28.5Z" />
         </svg>
     </div>
 
@@ -126,7 +275,8 @@
     <div id="p3" class="phase">
         <div id="ring-ui">
             <div id="ring-content">
-                <h1 style="font-family: 'Great Vibes'; font-size: 2.2rem; color: white;">Will You Be My Valentine? ❤️</h1>
+                <h1 style="font-family: 'Great Vibes'; font-size: 2.2rem; color: white;">Will You Be My Valentine? ❤️
+                </h1>
                 <div id="proposal-btns" style="display: none; margin-top: 30px; height: 150px; position: relative;">
                     <button id="yes-btn" class="btn btn-primary" onclick="triggerTransformation()">💖 YES</button>
                     <button id="no-btn" class="btn">💔 NO</button>
@@ -157,15 +307,22 @@
         </div>
     </div>
 
-    <audio id="music-1" loop><source src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/Enna%20Solla%20Pogirai%20Bgm.mp3" type="audio/mpeg"></audio>
-    <audio id="music-2"><source src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/Yen%20Moochavan%20Pechavan%20-%20Oorum%20Blood%20_%20Dude%20_%20Tamil.mp3" type="audio/mpeg"></audio>
+    <audio id="music-1" loop>
+        <source src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/Enna%20Solla%20Pogirai%20Bgm.mp3"
+            type="audio/mpeg">
+    </audio>
+    <audio id="music-2">
+        <source
+            src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/Yen%20Moochavan%20Pechavan%20-%20Oorum%20Blood%20_%20Dude%20_%20Tamil.mp3"
+            type="audio/mpeg">
+    </audio>
 
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         const cursor = document.getElementById('cursor-wrap');
         const introTextEl = document.getElementById('intro-text');
-        
+
         let mX = 0, mY = 0;
         let isMusicEnabled = false;
         let ringScene, ringCamera, ringRenderer, ringMesh;
@@ -173,7 +330,7 @@
         // --- 1. INITIALIZATION ---
         function startApp(music) {
             isMusicEnabled = music;
-            if(music) {
+            if (music) {
                 document.getElementById('music-1').play();
                 document.getElementById('music-1').volume = 0.5;
             }
@@ -191,13 +348,13 @@
             mX = e.clientX; mY = e.clientY;
             cursor.style.left = mX + 'px';
             cursor.style.top = mY + 'px';
-            if(Math.random() > 0.85) createTrailEmoji(mX, mY);
+            if (Math.random() > 0.85) createTrailEmoji(mX, mY);
 
             // No Button Evasion
             const noBtn = document.getElementById('no-btn');
             if (noBtn && document.getElementById('proposal-btns').style.display !== 'none') {
                 const rect = noBtn.getBoundingClientRect();
-                const dist = Math.hypot(mX - (rect.left + rect.width/2), mY - (rect.top + rect.height/2));
+                const dist = Math.hypot(mX - (rect.left + rect.width / 2), mY - (rect.top + rect.height / 2));
                 if (dist < 100) moveNoButton(noBtn);
             }
         });
@@ -211,7 +368,7 @@
             document.body.appendChild(el);
             el.animate([
                 { transform: 'translate(0,0) scale(1)', opacity: 1 },
-                { transform: `translate(${(Math.random()-0.5)*100}px, -100px) scale(0)`, opacity: 0 }
+                { transform: `translate(${(Math.random() - 0.5) * 100}px, -100px) scale(0)`, opacity: 0 }
             ], { duration: 1500, easing: 'ease-out' }).onfinish = () => el.remove();
         }
 
@@ -250,10 +407,10 @@
             const lines = ["In a world of billions...", "There is only one...", "My heart beats for you."];
             let i = 0;
             const timer = setInterval(() => {
-                if(i < lines.length) {
+                if (i < lines.length) {
                     introTextEl.innerText = lines[i];
                     introTextEl.classList.remove('show-text');
-                    void introTextEl.offsetWidth; 
+                    void introTextEl.offsetWidth;
                     introTextEl.classList.add('show-text');
                     i++;
                 } else {
@@ -275,14 +432,14 @@
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
             const playful = ["Please? 🥺", "Are you sure? 😭", "Wrong button! 💔", "Try again ❤️"];
-            btn.innerText = playful[Math.floor(Math.random()*playful.length)];
+            btn.innerText = playful[Math.floor(Math.random() * playful.length)];
         }
 
         // --- 5. TRANSFORMATION & CELEBRATION ---
         function triggerTransformation() {
             switchPhase('p3', 'p4');
             const heart = document.getElementById('morph-heart');
-            
+
             // Pumping zoom sequence
             setTimeout(() => heart.style.transform = 'scale(5)', 500);
             setTimeout(() => heart.style.transform = 'scale(15)', 1500);
@@ -295,7 +452,7 @@
         }
 
         function triggerExplosion() {
-            for(let i=0; i<150; i++) {
+            for (let i = 0; i < 150; i++) {
                 setTimeout(() => {
                     const x = Math.random() * window.innerWidth;
                     const y = Math.random() * window.innerHeight;
@@ -303,12 +460,12 @@
                 }, i * 10);
             }
             // Simple fireworks from corners
-            spawnFirework(0,0); spawnFirework(window.innerWidth,0);
+            spawnFirework(0, 0); spawnFirework(window.innerWidth, 0);
             spawnFirework(0, window.innerHeight); spawnFirework(window.innerWidth, window.innerHeight);
         }
 
         function spawnFirework(x, y) {
-            for(let i=0; i<20; i++) {
+            for (let i = 0; i < 20; i++) {
                 const el = document.createElement('div');
                 el.className = 'trail-emoji';
                 el.innerText = '🎆';
@@ -316,7 +473,7 @@
                 document.body.appendChild(el);
                 el.animate([
                     { transform: 'translate(0,0)', opacity: 1 },
-                    { transform: `translate(${(Math.random()-0.5)*600}px, ${(Math.random()-0.5)*600}px)`, opacity: 0 }
+                    { transform: `translate(${(Math.random() - 0.5) * 600}px, ${(Math.random() - 0.5) * 600}px)`, opacity: 0 }
                 ], { duration: 2000 }).onfinish = () => el.remove();
             }
         }
@@ -326,7 +483,7 @@
             const container = document.getElementById('slideshow-container');
             const wrapper = document.getElementById('slides-wrapper');
             container.style.display = 'block';
-            
+
             // Using placeholder romantic images
             const images = [
                 "https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/1.jpg",
@@ -345,7 +502,7 @@
                 const slide = document.createElement('div');
                 slide.className = 'slide';
                 slide.style.backgroundImage = `url(${src})`;
-                if(idx === 0) slide.classList.add('active-slide');
+                if (idx === 0) slide.classList.add('active-slide');
                 wrapper.appendChild(slide);
             });
 
@@ -361,21 +518,21 @@
         // Background Star Field
         function initBg() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const stars = Array.from({length: 100}, () => ({
+            const stars = Array.from({ length: 100 }, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 s: Math.random() * 2
             }));
 
             function draw() {
-                ctx.clearRect(0,0,canvas.width, canvas.height);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = "white";
                 stars.forEach(s => {
                     ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.s, 0, Math.PI*2);
+                    ctx.arc(s.x, s.y, s.s, 0, Math.PI * 2);
                     ctx.fill();
                     s.y -= 0.2;
-                    if(s.y < 0) s.y = canvas.height;
+                    if (s.y < 0) s.y = canvas.height;
                 });
                 requestAnimationFrame(draw);
             }
@@ -385,4 +542,5 @@
 
     </script>
 </body>
+
 </html>

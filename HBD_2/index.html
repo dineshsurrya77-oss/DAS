@@ -214,10 +214,11 @@
         }
 
         .polaroid img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
+            width: 300px;
+            height: 350px;
+            object-fit: contain;
             border: 2px solid #f0f0f0;
+            background: #fff;
         }
 
         .sticker-img {
@@ -330,31 +331,6 @@
             text-align: center;
         }
 
-        .vinyl-record {
-            width: 250px;
-            height: 250px;
-            background: url('assets/vinyl_record.png') no-repeat center;
-            background-size: contain;
-            margin: 60px 0;
-            animation: rotate 6s linear infinite;
-            animation-play-state: paused;
-            cursor: pointer;
-            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.6));
-            transition: transform 0.3s;
-        }
-
-        .vinyl-record:hover {
-            transform: scale(1.05);
-        }
-
-        .vinyl-record.playing {
-            animation-play-state: running;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
 
         .finale-msg {
             font-family: 'Dancing Script', cursive;
@@ -416,9 +392,8 @@
 <body>
 
     <!-- Audio -->
-    <audio id="hbd-music" loop>
-        <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_c361909a39.mp3" type="audio/mpeg">
-        <!-- Placeholder lofi track -->
+    <audio id="bgMusic" loop>
+        <source src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/Vizhi%20Veekura.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Page 1 -->
@@ -431,7 +406,7 @@
             <h1 class="message-bubbly">A Special Day for a Special Girl</h1>
             <img src="assets/landing_kitty.png" alt="Hello Kitty with Cake" class="kitty-cake" id="kitty-cake">
             <div style="margin-top: 50px; display: flex; justify-content: center;">
-                <button class="bow-btn" onclick="nextPage(2)">Enter the Dreamland</button>
+                <button class="bow-btn" id="start-btn" onclick="startWithMusic()">Unmute & Enter</button>
             </div>
         </div>
     </section>
@@ -444,18 +419,62 @@
         <div class="y2k-container">
             <h2 class="neon-text">Sweetest Memories</h2>
             <div class="photo-booth">
-                <div class="polaroid" style="--rot: -5deg">
-                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/9.jpg" alt="Memory 1">
-                </div>
-                <div class="polaroid" style="--rot: 3deg">
-                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/10.jpg" alt="Memory 2">
-                </div>
-                <div class="polaroid" style="--rot: -2deg">
-                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/11.jpg" alt="Memory 3">
-                </div>
-                <div class="polaroid" style="--rot: 6deg">
-                    <img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/Kovil/1.jpg" alt="Memory 4">
-                </div>
+                <!-- 50 Photos from dsdas collection -->
+                <!-- Varnam Day 1 (1-33) -->
+                <div class="polaroid" style="--rot: -3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/1.jpg"></div>
+                <div class="polaroid" style="--rot: 2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/2.jpg"></div>
+                <div class="polaroid" style="--rot: -5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/3.jpg"></div>
+                <div class="polaroid" style="--rot: 4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/4.jpg"></div>
+                <div class="polaroid" style="--rot: -2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/5.jpg"></div>
+                <div class="polaroid" style="--rot: 3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/6.jpg"></div>
+                <div class="polaroid" style="--rot: -4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/7.jpg"></div>
+                <div class="polaroid" style="--rot: 5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/8.jpg"></div>
+                <div class="polaroid" style="--rot: -1deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/9.jpg"></div>
+                <div class="polaroid" style="--rot: 6deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/10.jpg"></div>
+                <div class="polaroid" style="--rot: -2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/11.jpg"></div>
+                <div class="polaroid" style="--rot: 4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/12.jpg"></div>
+                <div class="polaroid" style="--rot: -5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/13.jpg"></div>
+                <div class="polaroid" style="--rot: 3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/14.jpg"></div>
+                <div class="polaroid" style="--rot: -1deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/15.jpg"></div>
+                <div class="polaroid" style="--rot: 5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/16.jpg"></div>
+                <div class="polaroid" style="--rot: -4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/17.jpg"></div>
+                <div class="polaroid" style="--rot: 2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/18.jpg"></div>
+                <div class="polaroid" style="--rot: -3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/19.jpg"></div>
+                <div class="polaroid" style="--rot: 6deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/20.jpg"></div>
+                <div class="polaroid" style="--rot: -2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/21.jpg"></div>
+                <div class="polaroid" style="--rot: 4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/22.jpg"></div>
+                <div class="polaroid" style="--rot: -5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/23.jpg"></div>
+                <div class="polaroid" style="--rot: 3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/24.jpg"></div>
+                <div class="polaroid" style="--rot: -1deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/25.jpg"></div>
+                <div class="polaroid" style="--rot: 5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/26.jpg"></div>
+                <div class="polaroid" style="--rot: -4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/27.jpg"></div>
+                <div class="polaroid" style="--rot: 2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/28.jpg"></div>
+                <div class="polaroid" style="--rot: -3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/29.jpg"></div>
+                <div class="polaroid" style="--rot: 6deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/30.jpg"></div>
+                <div class="polaroid" style="--rot: -2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/31.jpg"></div>
+                <div class="polaroid" style="--rot: 4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/32.jpg"></div>
+                <div class="polaroid" style="--rot: -5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/33.jpg"></div>
+                
+                <!-- Varnam Day 2 (1-15) -->
+                <div class="polaroid" style="--rot: 3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/1.jpg"></div>
+                <div class="polaroid" style="--rot: -1deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/2.jpg"></div>
+                <div class="polaroid" style="--rot: 5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/3.jpg"></div>
+                <div class="polaroid" style="--rot: -4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/4.jpg"></div>
+                <div class="polaroid" style="--rot: 2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/5.jpg"></div>
+                <div class="polaroid" style="--rot: -3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/6.jpg"></div>
+                <div class="polaroid" style="--rot: 6deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/7.jpg"></div>
+                <div class="polaroid" style="--rot: -2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/8.jpg"></div>
+                <div class="polaroid" style="--rot: 4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/9.jpg"></div>
+                <div class="polaroid" style="--rot: -5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/10.jpg"></div>
+                <div class="polaroid" style="--rot: 3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/11.jpg"></div>
+                <div class="polaroid" style="--rot: -1deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/12.jpg"></div>
+                <div class="polaroid" style="--rot: 5deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/13.jpg"></div>
+                <div class="polaroid" style="--rot: -4deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/14.jpg"></div>
+                <div class="polaroid" style="--rot: 2deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/15.jpg"></div>
+                
+                <!-- Extra Gems -->
+                <div class="polaroid" style="--rot: -3deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/8.jpg"></div>
+                <div class="polaroid" style="--rot: 6deg"><img src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/20260207_140023.jpg"></div>
             </div>
             <button class="phone-btn" onclick="nextPage(3)" title="Go to Final Page"></button>
         </div>
@@ -483,16 +502,18 @@
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="color: white; font-family: 'Bubblegum Sans'; font-size: 1.5rem; margin-bottom: 10px;">Play the Birthday Lofi</p>
-                <div class="vinyl-record" id="music-player" title="Click to play music"></div>
-            </div>
             
             <div style="height: 200px;"></div> <!-- Spacer for scroll trigger -->
         </div>
     </section>
 
     <script>
+        function startWithMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.play().catch(e => console.log("Audio play blocked:", e));
+            nextPage(2);
+        }
+
         function nextPage(num) {
             const current = document.querySelector('.page.active');
             const currentNum = parseInt(current.id.replace('page', ''));
@@ -561,18 +582,6 @@
             animation.onfinish = () => confetti.remove();
         }
 
-        // Music Player Logic
-        const player = document.getElementById('music-player');
-        const audio = document.getElementById('hbd-music');
-        player.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                player.classList.add('playing');
-            } else {
-                audio.pause();
-                player.classList.remove('playing');
-            }
-        });
 
         // Balloon Release
         let balloonTriggered = false;

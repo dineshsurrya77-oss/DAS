@@ -29,17 +29,17 @@
       </div>
 
       <div class="pin-pad">
-        <button class="pin-btn" data-num="1" onclick="pressPin('1')">1</button>
-        <button class="pin-btn" data-num="2" onclick="pressPin('2')">2</button>
-        <button class="pin-btn" data-num="3" onclick="pressPin('3')">3</button>
-        <button class="pin-btn" data-num="4" onclick="pressPin('4')">4</button>
-        <button class="pin-btn" data-num="5" onclick="pressPin('5')">5</button>
-        <button class="pin-btn" data-num="6" onclick="pressPin('6')">6</button>
-        <button class="pin-btn" data-num="7" onclick="pressPin('7')">7</button>
-        <button class="pin-btn" data-num="8" onclick="pressPin('8')">8</button>
-        <button class="pin-btn" data-num="9" onclick="pressPin('9')">9</button>
+        <button class="pin-btn" data-num="1">1</button>
+        <button class="pin-btn" data-num="2">2</button>
+        <button class="pin-btn" data-num="3">3</button>
+        <button class="pin-btn" data-num="4">4</button>
+        <button class="pin-btn" data-num="5">5</button>
+        <button class="pin-btn" data-num="6">6</button>
+        <button class="pin-btn" data-num="7">7</button>
+        <button class="pin-btn" data-num="8">8</button>
+        <button class="pin-btn" data-num="9">9</button>
         <button class="pin-btn action" onclick="clearPin()">CLR</button>
-        <button class="pin-btn" data-num="0" onclick="pressPin('0')">0</button>
+        <button class="pin-btn" data-num="0">0</button>
         <button class="pin-btn action" onclick="deletePin()">⌫</button>
       </div>
 
@@ -73,6 +73,9 @@
         <h3>Our Playlist</h3>
         <p>Songs that remind me of you</p>
       </div>
+    </div>
+    <div class="nav-row" style="margin-top: 40px; justify-content: center;">
+      <button class="nav-btn secondary" onclick="navigateTo('page-login')">← Back to Lock Screen</button>
     </div>
   </div>
 
@@ -113,7 +116,7 @@
         <img id="gallery-img" src="" alt="Our Photo" style="transition: opacity 0.3s;">
         <p class="polaroid-caption" id="gallery-caption"></p>
       </div>
-      <button class="slider-btn" onclick="nextPhoto()">›</button>
+      <button class="slider-btn" onclick="nextPhotoManual()">›</button>
     </div>
     <p class="photo-counter" id="photo-counter"></p>
 

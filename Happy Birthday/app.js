@@ -1,20 +1,65 @@
 // === PIN & NAVIGATION STATE ===
 let currentPin = '';
-const CORRECT_PIN = '1004';
+const CORRECT_PIN = '1506';
 let currentPhoto = 0;
 
 // Photo data with raw GitHub URLs
 const photos = [
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/1.jpg', caption: 'Happy Birthday, My Love 💖' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/2.jpg', caption: 'Your beautiful smile! ✨' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/3.jpg', caption: 'Us Against the World 🌍' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/4.jpg', caption: 'Forever & Always 💕' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/5.jpg', caption: 'My Favorite Person 🥰' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/6.jpg', caption: 'Adventure Buddies 🗺️' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/7.jpg', caption: 'Pure Happiness 😊' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/her/8.jpg', caption: 'My Sunshine ☀️' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/KG_CINEMAS%20OUTING/1.jpg', caption: 'Movie Date! 🍿' },
-  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/das/Kovil/1.jpg', caption: 'Peaceful Moments ✨' },
+  // Varnam Day 1 (1-33)
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/1.jpg', caption: 'Varnam Day 1: A beautiful start! ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/2.jpg', caption: 'Your radiance outshines the stars 🌟' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/3.jpg', caption: 'Pure joy in every moment 😊' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/4.jpg', caption: 'Capturing your elegance 👗' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/5.jpg', caption: 'That beautiful smile I love so much ❤️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/6.jpg', caption: 'Simply stunning! ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/7.jpg', caption: 'A moment frozen in time ❄️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/8.jpg', caption: 'You make every day feel like a celebration 🥂' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/9.jpg', caption: 'Graceful as always 🦢' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/10.jpg', caption: 'My heart skips a beat! 💓' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/11.jpg', caption: 'Shining brighter than the stage lights 💡' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/12.jpg', caption: 'The highlight of my day 🌈' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/13.jpg', caption: 'Everything about you is perfect ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/14.jpg', caption: 'A true queen 👑' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/15.jpg', caption: 'Love this energy! ⚡' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/16.jpg', caption: 'You are a work of art 🎨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/17.jpg', caption: 'Blessed to see you shine 🙏' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/18.jpg', caption: 'That look says everything 😍' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/19.jpg', caption: 'Radiating positivity ☀️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/20.jpg', caption: 'Unforgettable moments 🎞️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/21.jpg', caption: 'Your style is unmatched 👗' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/22.jpg', caption: 'Every pose is perfect 📸' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/23.jpg', caption: 'The belle of the ball 🌹' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/24.jpg', caption: 'Pure enchantment ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/25.jpg', caption: 'My favorite view 🏙️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/26.jpg', caption: 'Lost in your eyes 👀' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/27.jpg', caption: 'A dream come true 💭' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/28.jpg', caption: 'Simply breathtaking 💨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/29.jpg', caption: 'The magic is you ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/30.jpg', caption: 'Cherished memories ❤️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/31.jpg', caption: 'You light up the room 🕯️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/32.jpg', caption: 'Always and forever 💕' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_1_2026/33.jpg', caption: 'The end of Day 1, but the start of us! 🌅' },
+
+  // Varnam Day 2 (1-15)
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/1.jpg', caption: 'Varnam Day 2: The magic continues! ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/2.jpg', caption: 'Double the beauty! 😍' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/3.jpg', caption: 'Vibrant and full of life 🌈' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/4.jpg', caption: 'That sparkle in your eye ✨' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/5.jpg', caption: 'Another day of being perfect ❤️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/6.jpg', caption: 'I could stare at you all day 🕰️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/7.jpg', caption: 'Pure elegance 💎' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/8.jpg', caption: 'Simply the best! 🥇' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/9.jpg', caption: 'Captivated by your charm 🪄' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/10.jpg', caption: 'My world is better with you 🌍' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/11.jpg', caption: 'A moment of serenity 🍃' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/12.jpg', caption: 'The definition of grace 🦢' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/13.jpg', caption: 'Your presence is a blessing 🙏' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/14.jpg', caption: 'So proud of you! ❤️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/Varnam_Day_2_2026/15.jpg', caption: 'Ending the event on a high note! 🎵' },
+
+  // Extra Gems (2 photos)
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/8.jpg', caption: 'A candid moment of pure love ❤️' },
+  { src: 'https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/html%20files/backend/dsdas/20260207_140023.jpg', caption: 'Forever starts today 💍' },
 ];
 
 // === STICKER DATA ===
@@ -171,18 +216,16 @@ function updatePhoto() {
   }, 200);
 }
 
-function nextPhoto() {
-  currentPhoto = (currentPhoto + 1) % photos.length;
-  updatePhoto();
-}
-
-function prevPhoto() {
-  currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
-  updatePhoto();
-}
+let galleryInterval;
 
 // === NAVIGATION ===
 function navigateTo(pageId) {
+  // Clear any existing intervals when navigating
+  if (galleryInterval) {
+    clearInterval(galleryInterval);
+    galleryInterval = null;
+  }
+
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById(pageId);
   target.classList.remove('active');
@@ -190,6 +233,36 @@ function navigateTo(pageId) {
   void target.offsetWidth;
   target.classList.add('active');
   window.scrollTo(0, 0);
+
+  // Start auto-slideshow if entering gallery
+  if (pageId === 'page-gallery') {
+    startAutoSlide();
+  }
+}
+
+function startAutoSlide() {
+  if (galleryInterval) clearInterval(galleryInterval);
+  galleryInterval = setInterval(() => {
+    nextPhoto();
+  }, 4000); // Switch every 4 seconds
+}
+
+function nextPhoto() {
+  currentPhoto = (currentPhoto + 1) % photos.length;
+  updatePhoto();
+}
+
+function prevPhoto() {
+  // Reset timer on manual click
+  if (galleryInterval) startAutoSlide();
+  currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
+  updatePhoto();
+}
+
+// Intercept manual next click to reset timer
+function nextPhotoManual() {
+  if (galleryInterval) startAutoSlide();
+  nextPhoto();
 }
 
 // === VINYL PLAY/PAUSE ===
