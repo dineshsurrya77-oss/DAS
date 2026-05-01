@@ -197,88 +197,121 @@ function checkPin() {
   }
 }
 
+let gridPage = 0;
+const GRID_SIZE = 12; // 2 rows of 6
+
 // === GALLERY ===
 function setupGallery() {
-  updatePhoto();
+  updateGrid();
 }
 
-function updatePhoto() {
-  const img = document.getElementById('gallery-img');
+function updateGrid() {
+  const grid = document.getElementById('gallery-grid');
   const bg = document.getElementById('gallery-bg');
-  const caption = document.getElementById('gallery-caption');
   const counter = document.getElementById('photo-counter');
-
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = photos[currentPhoto].src;
-    bg.style.backgroundImage = `url('${photos[currentPhoto].src}')`;
-    caption.textContent = photos[currentPhoto].caption;
-    counter.textContent = `${currentPhoto + 1} / ${photos.length}`;
-    img.style.opacity = '1';
-  }, 200);
+  
+  if (!grid) return;
+  grid.innerHTML = '';
+  const start = gridPage * GRID_SIZE;
+  const end = Math.min(start + GRID_SIZE, photos.length);
+  
+  for (let i = start; i < end; i++) {
+    const item = document.createElement('div');
+    item.className = 'grid-item';
+    item.innerHTML = `<img src="${photos[i].src}" alt="Memory">`;
+    item.onclick = () => openLightbox(i);
+    grid.appendChild(item);
+  }
+  
+  if (counter) counter.textContent = `Page ${gridPage + 1} of ${Math.ceil(photos.length / GRID_SIZE)}`;
+  
+  // Set background to the first photo of the current page for atmosphere
+  if (bg && photos[start]) {
+    bg.style.backgroundImage = `url('${photos[start].src}')`;
+  }
 }
 
-let galleryInterval;
+function nextGridPage() {
+  if ((gridPage + 1) * GRID_SIZE < photos.length) {
+    gridPage++;
+    updateGrid();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function prevGridPage() {
+  if (gridPage > 0) {
+    gridPage--;
+    updateGrid();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// === LIGHTBOX ===
+function openLightbox(index) {
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  const caption = document.getElementById('lightbox-caption');
+  
+  if (!lightbox || !img || !caption) return;
+  img.src = photos[index].src;
+  caption.textContent = photos[index].caption;
+  lightbox.classList.add('active');
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) lightbox.classList.remove('active');
+}
+
+// === VOUCHERS ===
+function redeemVoucher(el, reward) {
+  if (el.classList.contains('redeemed')) return;
+  
+  const confirmRedeem = confirm(`Are you sure you want to redeem your voucher for: ${reward}? 💖`);
+  if (confirmRedeem) {
+    el.classList.add('redeemed');
+    // Add some confetti for the specific voucher
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+    alert(`Yay! Your voucher for "${reward}" has been successfully redeemed. I can't wait! 😍`);
+  }
+}
 
 // === NAVIGATION ===
+let gallerySongTimeout;
+
 function navigateTo(pageId) {
   const galleryAudio = document.getElementById('gallery-audio');
+  const galleryAudio2 = document.getElementById('gallery-audio-2');
 
-  // Clear any existing intervals when navigating
-  if (galleryInterval) {
-    clearInterval(galleryInterval);
-    galleryInterval = null;
+  if (gallerySongTimeout) {
+    clearTimeout(gallerySongTimeout);
+    gallerySongTimeout = null;
   }
 
-  // Handle Gallery Music
+  // Handle Music Reset
+  if (galleryAudio) { galleryAudio.pause(); galleryAudio.currentTime = 0; }
+  if (galleryAudio2) { galleryAudio2.pause(); galleryAudio2.currentTime = 0; }
+
   if (pageId === 'page-gallery') {
-    galleryAudio.play().catch(e => console.log("Playback failed:", e));
-  } else {
-    galleryAudio.pause();
-    galleryAudio.currentTime = 0; // Reset to start
+    updateGrid();
+    if (galleryAudio) {
+      galleryAudio.play().catch(e => console.log("Playback failed:", e));
+      gallerySongTimeout = setTimeout(() => {
+        galleryAudio.pause();
+        if (galleryAudio2) galleryAudio2.play().catch(e => console.log("Second song failed:", e));
+      }, 24000);
+    }
   }
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById(pageId);
-  target.classList.remove('active');
-  // Force reflow for animation
-  void target.offsetWidth;
-  target.classList.add('active');
-  window.scrollTo(0, 0);
-
-  // Start auto-slideshow if entering gallery
-  if (pageId === 'page-gallery') {
-    startAutoSlide();
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
   }
-}
-
-function startAutoSlide() {
-  if (galleryInterval) clearInterval(galleryInterval);
-  galleryInterval = setInterval(() => {
-    nextPhoto();
-  }, 4000); // Switch every 4 seconds
-}
-
-function nextPhoto() {
-  currentPhoto = (currentPhoto + 1) % photos.length;
-  updatePhoto();
-}
-
-function prevPhoto() {
-  // Reset timer on manual click
-  if (galleryInterval) startAutoSlide();
-  currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
-  updatePhoto();
-}
-
-// Intercept manual next click to reset timer
-function nextPhotoManual() {
-  if (galleryInterval) startAutoSlide();
-  nextPhoto();
-}
-
-// === VINYL PLAY/PAUSE ===
-function toggleVinyl() {
-  const vinyl = document.querySelector('.vinyl-record');
-  vinyl.classList.toggle('paused');
 }

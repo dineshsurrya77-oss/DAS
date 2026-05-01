@@ -10,6 +10,7 @@
 <body>
 
   <audio id="gallery-audio" src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/last_7_minutes.mp3" loop></audio>
+  <audio id="gallery-audio-2" src="https://raw.githubusercontent.com/dineshsurrya77-oss/DAS/main/Potta_Pulla_-_RR.mp3" loop></audio>
   <!-- Floating Stickers Layer -->
   <div id="sticker-layer"></div>
   <!-- Confetti Background -->
@@ -46,7 +47,7 @@
 
       <div id="pin-error" class="login-error"></div>
       <div class="hint-box">
-        🔑 <span>Hint:</span> It's her birthday (DMYY)
+        🔑 <span>Hint:</span> It's your birthday (DMYY)
       </div>
     </div>
   </div>
@@ -70,11 +71,11 @@
         <h3>Photo Gallery</h3>
         <p>Our best moments</p>
       </div>
-      <!-- Music Card -->
-      <div class="gift-card" onclick="navigateTo('page-music')">
-        <span class="icon">🎵</span>
-        <h3>Our Playlist</h3>
-        <p>Songs that remind me of you</p>
+      <!-- Vouchers Card -->
+      <div class="gift-card" onclick="navigateTo('page-vouchers')">
+        <span class="icon">🎟️</span>
+        <h3>Love Vouchers</h3>
+        <p>Redeemable for special treats!</p>
       </div>
     </div>
     <div class="nav-row" style="margin-top: 40px; justify-content: center;">
@@ -109,44 +110,78 @@
     </div>
   </div>
 
-  <!-- ========== PAGE 4: PHOTO GALLERY ========== -->
   <div id="page-gallery" class="page">
     <div id="gallery-bg"></div>
     <h1 class="gallery-title">📸 Our Memories</h1>
-
-    <div class="polaroid-slider">
-      <button class="nav-btn secondary gallery-nav-left" onclick="navigateTo('page-gifts')">← Back</button>
-      <button class="slider-btn" onclick="prevPhoto()">‹</button>
-      <div class="polaroid-frame">
-        <img id="gallery-img" src="" alt="Our Photo" style="transition: opacity 0.3s;">
-        <p class="polaroid-caption" id="gallery-caption"></p>
-      </div>
-      <button class="slider-btn" onclick="nextPhotoManual()">›</button>
-      <button class="nav-btn primary gallery-nav-right" onclick="navigateTo('page-music')">Music →</button>
+    <div class="gallery-wrapper">
+      <button class="side-nav-btn prev" onclick="prevGridPage()">‹</button>
+      <div id="gallery-grid" class="gallery-grid"></div>
+      <button class="side-nav-btn next" onclick="nextGridPage()">›</button>
     </div>
-    <p class="photo-counter" id="photo-counter"></p>
+
+    <div class="gallery-controls">
+      <button class="nav-btn secondary" onclick="navigateTo('page-gifts')">← Back to Menu</button>
+      <button class="nav-btn primary" onclick="navigateTo('page-vouchers')">Next: Vouchers →</button>
+    </div>
+
+    <p class="photo-counter" id="photo-counter" style="text-align: center; color: rgba(255,255,255,0.5); margin-top: 10px;"></p>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+      <div class="lightbox-content" onclick="event.stopPropagation()">
+        <img id="lightbox-img" src="">
+        <p id="lightbox-caption"></p>
+        <button class="close-lightbox" onclick="closeLightbox()">×</button>
+      </div>
+    </div>
   </div>
 
-  <!-- ========== PAGE 5: MUSIC ========== -->
-  <div id="page-music" class="page">
-    <h1 class="music-title">🎵 Our Song</h1>
+  <!-- ========== PAGE 5: LOVE VOUCHERS ========== -->
+  <div id="page-vouchers" class="page">
+    <h1 class="gallery-title">🎟️ Your Love Vouchers</h1>
+    <p style="color: white; margin-bottom: 30px; opacity: 0.8;">Tap a voucher to "redeem" it! ✨</p>
 
-    <div class="vinyl-container" onclick="toggleVinyl()">
-      <div class="vinyl-record"></div>
+    <div class="vouchers-grid">
+      <div class="voucher-card" onclick="redeemVoucher(this, 'A Romantic Date Night 🍷')">
+        <div class="voucher-content">
+          <span class="voucher-icon">🕯️</span>
+          <h3>Date Night</h3>
+          <p>Valid for one fancy dinner & endless talks</p>
+          <div class="redeem-btn">Redeem Now</div>
+        </div>
+      </div>
+
+      <div class="voucher-card" onclick="redeemVoucher(this, 'Infinite Warm Hugs 🤗')">
+        <div class="voucher-content">
+          <span class="voucher-icon">🤗</span>
+          <h3>Infinite Hugs</h3>
+          <p>Unlimited warm squeezes on demand</p>
+          <div class="redeem-btn">Redeem Now</div>
+        </div>
+      </div>
+
+      <div class="voucher-card" onclick="redeemVoucher(this, 'A Movie Marathon 🍿')">
+        <div class="voucher-content">
+          <span class="voucher-icon">🎬</span>
+          <h3>Movie Night</h3>
+          <p>You pick the movies, I provide the snacks</p>
+          <div class="redeem-btn">Redeem Now</div>
+        </div>
+      </div>
+
+      <div class="voucher-card" onclick="redeemVoucher(this, 'A Day of Pampering 💆‍♀️')">
+        <div class="voucher-content">
+          <span class="voucher-icon">✨</span>
+          <h3>Queen Treatment</h3>
+          <p>A full day where you make all the rules</p>
+          <div class="redeem-btn">Redeem Now</div>
+        </div>
+      </div>
     </div>
 
-    <div class="song-card">
-      <p class="song-label">★ Recommended Song ★</p>
-      <p class="song-name">Perfect</p>
-      <p class="song-artist">Ed Sheeran</p>
-      <a class="spotify-btn" href="https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v" target="_blank" rel="noopener">
-        🎧 Save on Spotify
-      </a>
-    </div>
-
-    <div class="nav-row" style="margin-top:30px;">
-      <button class="nav-btn secondary" onclick="navigateTo('page-gifts')">← Back to Gifts</button>
-      <button class="nav-btn primary" onclick="navigateTo('page-login')">🔒 Lock</button>
+    <div class="nav-row" style="margin-top: 50px;">
+      <button class="nav-btn secondary" onclick="navigateTo('page-gallery')">← Back to Gallery</button>
+      <button class="nav-btn primary" onclick="navigateTo('page-gifts')">Back to Menu 🏠</button>
     </div>
   </div>
 
